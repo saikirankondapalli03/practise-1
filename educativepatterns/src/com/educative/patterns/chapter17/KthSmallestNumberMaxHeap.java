@@ -5,6 +5,7 @@ import java.util.*;
 class KthSmallestNumberMaxHeap {
 
 	public static int findKthSmallestNumber(int[] nums, int k) {
+		k=k+1;
 		PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>((n1, n2) -> n2 - n1);
 		// put first k numbers in the max heap
 		for (int i = 0; i < k; i++)
@@ -26,7 +27,7 @@ class KthSmallestNumberMaxHeap {
 	}
 
 	public static void main(String[] args) {
-		int result = KthSmallestNumberMaxHeap.findKthSmallestNumber(new int[] { 1, 5, 12, 2, 11, 5 }, 3);
+		int result = KthSmallestNumberMaxHeap.findKthSmallestNumber(new int[] { 1,2,3,4,5,6,7 }, 3);
 		System.out.println("Kth smallest number is: " + result);
 
 		// since there are two 5s in the input array, our 3rd and 4th smallest numbers

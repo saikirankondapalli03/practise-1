@@ -45,6 +45,22 @@ public class Permutation {
 			swap(input, currentIndex, i);
 		}
 	}
+	
+	static void permutate(char[] str, int index) {
+
+        // base case
+        if (index == str.length) {
+            System.out.println(str);
+            return;
+        }
+
+        // regular case
+        for (int i = index; i < str.length; i++) {
+            swap(str, index, i);
+            permutate(str, index + 1);
+            swap(str, index, i);
+        }
+    }
 
 	private static void permutation(String ouput, String input) {
 		if (input.isEmpty()) {
