@@ -1,4 +1,4 @@
-package com.educative.multithreading.chapter4.locks;
+package com.educative.multithreading.chapter5.monitor.signal;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -46,7 +46,7 @@ public class MissedSignalExampleSolution {
 	
 	*/	
 		
-		//this will be in deadlock
+		//this will not be in deadlock
 		
 		signaller.start();
 		waiter.start();

@@ -2,6 +2,7 @@ package com.educative.multithreading.chapter3.deadlock;
 
 class SingleResourceDeadLock {
 
+	//NonReentrantLock
 	public static void main(String args[]) throws Exception {
 		NonReentrantLock nreLock = new NonReentrantLock();
 
