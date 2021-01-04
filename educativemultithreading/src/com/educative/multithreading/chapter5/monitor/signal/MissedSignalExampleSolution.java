@@ -13,6 +13,7 @@ public class MissedSignalExampleSolution {
 		Thread signaller = new Thread(new Runnable() {
 			public void run() {
 				lock.lock();
+	
 				wasSignalled = true;
 
 				condition.signal();
@@ -47,11 +48,13 @@ public class MissedSignalExampleSolution {
 	*/	
 		
 		//this will not be in deadlock
-		
 		signaller.start();
+		
 		waiter.start();
-		waiter.join();
-		signaller.join();
+
+		
+		//waiter.join();
+		//signaller.join();
 		System.out.println("Program Exiting.");
 	}
 

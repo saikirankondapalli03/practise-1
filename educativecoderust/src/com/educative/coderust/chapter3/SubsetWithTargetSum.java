@@ -22,8 +22,8 @@ public class SubsetWithTargetSum {
 	}
 
 	public static void main(String[] args) {
-		int A[] = { 1, -2, 1, -7, 9, 3, 12 };
+		int A[] = {  2, 5, 4,1 ,3,3};
 		ArrayList<Integer> ss = new ArrayList<Integer>();
-		findSubset(A, 0, ss, 0, 10);
+		findSubset(A, 0, ss, 0, 6);
 	}
 }

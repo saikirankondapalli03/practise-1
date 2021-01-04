@@ -12,7 +12,6 @@ class EmployeeSyncWObjectLock {
 
 	// also synchronized on the same object
 	public synchronized void resetName() {
-
 		this.name = "";
 	}
 

@@ -7,14 +7,14 @@ class IterativeAncesstors
 	
 	public static void vSum(HashMap<Integer,Integer> hash, Node root, int c) {
 		/* Construct a binary tree like this
-		6
-	   / \
-	  4   9
-	 / \  |  \
-	2	5 8	  12
-			  / \
-			 10  14 
-*/
+				6
+			   / \
+			  4   9
+			 / \  |  \
+			2	5 8	  12
+					  / \
+					 10  14 
+		 */
 		if(root.leftChild!=null)
 			vSum(hash,root.leftChild,c-1);
 		if(root.rightChild!=null)
@@ -85,7 +85,7 @@ class IterativeAncesstors
 		
 		
 	}
-	
+	/*
 	
 	Node findLCA(int n1, int n2) 
     { 
@@ -119,5 +119,5 @@ class IterativeAncesstors
   
         // Otherwise check if left subtree or right subtree is LCA 
         return (left_lca != null) ? left_lca : right_lca; 
-    }
+    }*/
 } 

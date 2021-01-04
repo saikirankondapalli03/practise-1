@@ -32,7 +32,7 @@ public class LPSubString {
 	public static void main(String[] args) {
 		LPSubString lps = new LPSubString();
 		//System.out.println(lps.findLPSLength("abdbca"));
-		System.out.println(lps.findLPSLength("bzcaa"));
+		System.out.println(lps.findLPSLength("cddpd"));
 		//System.out.println(lps.findLPSLength("pqr"));
 	}
 }

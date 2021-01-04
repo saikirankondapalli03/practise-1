@@ -1,7 +1,7 @@
 package com.educative.multithreading.chapter5.monitor.semaphore;
 
 import java.util.concurrent.Semaphore;
-
+//use of semaphores(for both locking and signalling)
 class IncorrectSemaphoreExample {
 	public static void main(String args[]) throws InterruptedException {
 		IncorrectSemaphoreExample.example();
@@ -51,8 +51,6 @@ class IncorrectSemaphoreExample {
 		});
 
 		goodThread.start();
-		badThread.join();
-		goodThread.join();
-		System.out.println("Exiting Program");
+			System.out.println("Exiting Program");
 	}
 }

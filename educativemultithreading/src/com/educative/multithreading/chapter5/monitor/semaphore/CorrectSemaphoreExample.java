@@ -1,7 +1,7 @@
 package com.educative.multithreading.chapter5.monitor.semaphore;
 
 import java.util.concurrent.Semaphore;
-
+//use of semaphores(for both locking and signalling)
 class CorrectSemaphoreExample {
 	public static void main(String args[]) throws InterruptedException {
 		CorrectSemaphoreExample.example();
@@ -59,3 +59,20 @@ class CorrectSemaphoreExample {
 		System.out.println("Exiting Program");
 	}
 }
+
+/*
+ * 
+ * * A thread can also wake up without being notified, interrupted, or
+* timing out, a so-called <i>spurious wakeup</i>.  While this will rarely
+* occur in practice, applications must guard against it by testing for
+* the condition that should have caused the thread to be awakened and
+* continuing to wait if the condition is not satisfied.  In other words,
+*
+* 
+*     synchronized (obj) {
+*         while (condition does not hold)
+*             obj.wait(timeout);
+*         ... // Perform action appropriate to condition
+*     }
+*/
+ 

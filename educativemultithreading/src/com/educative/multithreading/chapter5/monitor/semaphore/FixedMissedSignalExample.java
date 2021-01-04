@@ -1,7 +1,7 @@
 package com.educative.multithreading.chapter5.monitor.semaphore;
 
 import java.util.concurrent.Semaphore;
-
+//use of semaphores(for both locking and signalling)
 class FixedMissedSignalExample {
 
 	public static void example() throws InterruptedException {
@@ -28,12 +28,13 @@ class FixedMissedSignalExample {
 			}
 		});
 
+				
 		signaller.start();
 		signaller.join();
 		Thread.sleep(5000);
 		waiter.start();
 		waiter.join();
-
+		
 		System.out.println("Program Exiting.");
 	}
 

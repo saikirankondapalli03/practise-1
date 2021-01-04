@@ -18,34 +18,25 @@ public class MergeSort {
 
 	    
 	    static void mergeSort(int start, int end, int[] input) {
-
 	        if (start == end) {
 	            return;
 	        }
-
 	        int mid = (start + end) / 2;
-
 	        // sort first half
 	        mergeSort(start, mid, input);
-
 	        // sort second half
 	        mergeSort(mid + 1, end, input);
-
 	        // merge the two sorted arrays
 	        int i = start;
 	        int j = mid + 1;
 	        int k;
-
 	        for (k = start; k <= end; k++) {
 	            scratch[k] = input[k];
 	        }
-
 	        k = start;
 	        while (k <= end) {
-
 	            if (i <= mid && j <= end) {
 	                input[k] = Math.min(scratch[i], scratch[j]);
-
 	                if (input[k] == scratch[i]) {
 	                    i++;
 	                } else {

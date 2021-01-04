@@ -1,0 +1,2 @@
+The JVM exits when all the running threads are daemon threads. So imagine you're writing a simple game where your main method loops until you decide to quit. And imagine that at the start of the game, you start a thread that will endlessly poll some website to trigger alerts. You would like the JVM to exit when you decide to end the game. You don't want the endless polling to prevent the game from ending. So you make this polling thread a daemon thread.
+

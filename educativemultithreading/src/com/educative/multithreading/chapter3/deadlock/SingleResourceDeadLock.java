@@ -2,7 +2,7 @@ package com.educative.multithreading.chapter3.deadlock;
 
 class SingleResourceDeadLock {
 
-	//NonReentrantLock
+	//NonReentrantLock IT IS NOT REENTRANT 
 	public static void main(String args[]) throws Exception {
 		NonReentrantLock nreLock = new NonReentrantLock();
 
@@ -11,11 +11,13 @@ class SingleResourceDeadLock {
 		
 		System.out.println("Acquired first lock");
 		System.out.println("Trying to acquire second lock");
+		//nreLock.unlock(); //uncommenting these avoids deadlock
 
 		nreLock.lock();
-
+		//nreLock.unlock(); //uncommenting these avoids deadlock
 		// Second locking results in a self deadlock
 		System.out.println("Acquired second lock");
+		
 	}
 }
 

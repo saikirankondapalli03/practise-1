@@ -1,7 +1,6 @@
 package com.educative.multithreading.chapter4.synchronization;
 
 class EmployeeSyncWOObjectLock {
-
 	// shared variable
 	private String name;
 
@@ -12,7 +11,6 @@ class EmployeeSyncWOObjectLock {
 
 	// also synchronized on the same object
 	public synchronized void resetName() {
-
 		this.name = "";
 	}
 
