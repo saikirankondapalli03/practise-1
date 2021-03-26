@@ -3,24 +3,19 @@ package com.educative.coderust.chapter1;
 public class BinarySearchRotatedArray {
 	public static int binarySearchRecursive(int[] arr, int start, int end, int key) {
 		// assuming all the keys are unique.
-
 		if (start > end) {
 			return -1;
 		}
-
 		int mid = start + (end - start) / 2;
-
 		if (arr[mid] == key) {
 			return mid;
 		}
 		// if element at start is less than mid
 		// if key is less than mid and it is greater than start
 		// then key answer lies in start to mid-1
-
 		if (arr[start] <= arr[mid] && key <= arr[mid] && key >= arr[start]) {
 			return binarySearchRecursive(arr, start, mid - 1, key);
 		}
-
 		// if element in mid is less than end
 		// if key is greater than element at mid
 		// if key is less than element at end
@@ -28,15 +23,12 @@ public class BinarySearchRotatedArray {
 		else if (arr[mid] <= arr[end] && key >= arr[mid] && key <= arr[end]) {
 			return binarySearchRecursive(arr, mid + 1, end, key);
 		}
-
 		else if (arr[end] <= arr[mid]) {
 			return binarySearchRecursive(arr, mid + 1, end, key);
 		}
-
 		else if (arr[start] >= arr[mid]) {
 			return binarySearchRecursive(arr, start, mid - 1, key);
 		}
-
 		return -1;
 	}
 

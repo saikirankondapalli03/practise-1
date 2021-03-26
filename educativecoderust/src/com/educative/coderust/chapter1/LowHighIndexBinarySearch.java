@@ -8,12 +8,9 @@ public class LowHighIndexBinarySearch {
 		int low = 0;
 		int high = arr.size() - 1;
 		int mid = high / 2;
-
 		while (low <= high) {
-
-			int midElem = arr.get(mid);
-
-			if (midElem < key) {
+ 			int midElem = arr.get(mid);
+ 			if (midElem < key) {
 				low = mid + 1;
 			} else {
 				high = mid - 1;

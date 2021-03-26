@@ -13,7 +13,8 @@ class TripletWithSmallerSum {
 		return count;
 	}
 
-	private static int searchPair(int[] arr, int targetSum, int first) {
+	private static int searchPair(int[] arr, int targetSum, int first) 
+	{
 		int count = 0;
 		int left = first + 1, right = arr.length - 1;
 		while (left < right) {
@@ -30,12 +31,14 @@ class TripletWithSmallerSum {
 		return count;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		System.out.println(TripletWithSmallerSum.searchTriplets(new int[] { -1, 0, 2, 3 }, 3));
-		System.out.println(TripletWithSmallerSum.searchTriplets(new int[] { -1, 4, 2, 1, 3 }, 5));
+		System.out.println(TripletWithSmallerSum.listAllTriplets(new int[] { -1, 4, 2, 1, 3 }, 5));
 	}
 
-	public static List<List<Integer>> listAllTriplets(int[] arr, int target) {
+	public static List<List<Integer>> listAllTriplets(int[] arr, int target)
+	{
 		Arrays.sort(arr);
 		List<List<Integer>> triplets = new ArrayList<>();
 		for (int i = 0; i < arr.length - 2; i++) {
