@@ -1,4 +1,4 @@
-package com.educative.patterns.chapter1.window.pattern1;
+package com.educative.patterns.chapter1.window.pattern1.constantwindow;
 
 
 //https://takeuforward.org/plus/dsa/sliding-window-and-2-pointer/pattern-and-template/theory

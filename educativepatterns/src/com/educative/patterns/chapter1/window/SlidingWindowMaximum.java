@@ -11,6 +11,38 @@ class SlidingWindowMaximum {
 		}
 		return currentWindow;
 	}
+	
+	public static int[] findMaxInWindows(int[] nums, int w) {
+        if (nums == null || nums.length == 0 || w <= 0) {
+            return new int[0];
+        }
+        
+        int n = nums.length;
+        int[] result = new int[n - w + 1];
+        Deque<Integer> deque = new ArrayDeque<>();
+        
+        for (int i = 0; i < n; i++) {
+            // Remove elements outside the current window
+            if (!deque.isEmpty() && deque.peekFirst() == i - w) {
+                deque.pollFirst();
+            }
+            
+            // Remove smaller elements from the rear
+            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
+                deque.pollLast();
+            }
+            
+            deque.offerLast(i);
+            
+            // Start storing results when we hit the first window
+            if (i >= w - 1) {
+                result[i - w + 1] = nums[deque.peekFirst()];
+            }
+        }
+        
+        return result;
+    }
+
 
 	// function to find the maximum in all possible windows
 	public static int[] findMaxSlidingWindow(int[] nums, int w) {
@@ -37,6 +69,13 @@ class SlidingWindowMaximum {
 	
 	// driver code
 	public static void main(String args[]) {
+		
+		  int[] nums = {1, 3, -1, -3, 5, 3, 6, 7};
+	        int w = 3;
+	        int[] maxInWindows = findMaxInWindows(nums, w);
+	        System.out.println(Arrays.toString(maxInWindows));
+	        
+	        
 		int windowSizes [] = {3, 3, 3, 3, 2, 4, 3, 2, 3, 6};
 		int [][] numLists = {
 			{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},

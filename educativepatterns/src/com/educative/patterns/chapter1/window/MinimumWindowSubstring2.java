@@ -2,7 +2,6 @@ package com.educative.patterns.chapter1.window;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.*;
 
 public class MinimumWindowSubstring2 {
 

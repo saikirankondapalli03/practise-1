@@ -1,4 +1,4 @@
-package com.educative.patterns.chapter1.window;
+package com.educative.patterns.chapter1.window.pattern3.stringwindow;
 
 import java.util.*;
 

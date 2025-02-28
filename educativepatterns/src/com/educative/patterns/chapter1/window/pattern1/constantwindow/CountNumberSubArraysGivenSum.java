@@ -1,4 +1,4 @@
-package com.educative.patterns.chapter1.window.pattern1;
+package com.educative.patterns.chapter1.window.pattern1.constantwindow;
 
 public class CountNumberSubArraysGivenSum {
 

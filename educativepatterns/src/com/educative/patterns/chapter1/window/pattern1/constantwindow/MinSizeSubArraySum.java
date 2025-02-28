@@ -1,4 +1,4 @@
-package com.educative.patterns.chapter1.window.pattern1;
+package com.educative.patterns.chapter1.window.pattern1.constantwindow;
 
 class MinSizeSubArraySum {
 	public static int findMinSubArray(int S, int[] arr) {

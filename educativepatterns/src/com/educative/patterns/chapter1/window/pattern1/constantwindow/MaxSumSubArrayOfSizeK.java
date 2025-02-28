@@ -1,4 +1,4 @@
-package com.educative.patterns.chapter1.window.pattern1;
+package com.educative.patterns.chapter1.window.pattern1.constantwindow;
 
 class MaxSumSubArrayOfSizeK {
 	public static int findMaxSumSubArray(int k, int[] arr) {

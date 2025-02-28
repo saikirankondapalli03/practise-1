@@ -16,6 +16,8 @@ import java.util.*;
 
 //https://takeuforward.org/plus/dsa/sliding-window-and-2-pointer/longest-and-smallest-window-problems/longest-repeating-character-replacement
 
+//https://www.educative.io/courses/grokking-coding-interview/solution-longest-repeating-character-replacement
+
 class CharacterReplacement {
 	public static int findLength(String str, int k) {
 		int windowStart = 0, maxLength = 0, maxRepeatLetterCount = 0;
@@ -48,8 +50,8 @@ class CharacterReplacement {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(CharacterReplacement.findLength("abdghe", 2));
-		System.out.println(CharacterReplacement.findLength("abb", 2));
-		System.out.println(CharacterReplacement.findLength("abccdee", 4));
+		System.out.println(CharacterReplacement.findLength("aabccbb", 2));
+		System.out.println(CharacterReplacement.findLength("abbcb", 1));
+		System.out.println(CharacterReplacement.findLength("abccde", 1));
 	}
 }

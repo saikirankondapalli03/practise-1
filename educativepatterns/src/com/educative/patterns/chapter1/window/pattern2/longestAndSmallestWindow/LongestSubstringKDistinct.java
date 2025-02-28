@@ -1,4 +1,4 @@
-package com.educative.patterns.chapter1.window;
+package com.educative.patterns.chapter1.window.pattern2.longestAndSmallestWindow;
 
 import java.util.*;
 
