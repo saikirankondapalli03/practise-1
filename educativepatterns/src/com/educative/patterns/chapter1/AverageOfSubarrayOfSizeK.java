@@ -1,4 +1,4 @@
-package com.educative.patterns.chapter1;
+ package com.educative.patterns.chapter1;
 
 import java.util.Arrays;
 

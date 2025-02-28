@@ -1,5 +1,8 @@
 package com.educative.patterns.chapter1;
 
+
+//https://takeuforward.org/plus/dsa/sliding-window-and-2-pointer/longest-and-smallest-window-problems/max-consecutive-ones-iii?tab=submissions
+
 class ReplacingOnes {
 	public static int findLength(int[] arr, int k) {
 		int windowStart = 0, maxLength = 0, maxOnesCount = 0;

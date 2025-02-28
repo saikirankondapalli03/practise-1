@@ -2,6 +2,8 @@ package com.educative.patterns.chapter1.window;
 
 import java.util.*;
 
+//https://takeuforward.org/plus/dsa/sliding-window-and-2-pointer/longest-and-smallest-window-problems/minimum-window-substring-?tab=submissions
+
 class MinimumWindowSubstring {
 	public static String findSubstring(String str, String pattern) {
 		int windowStart = 0, matched = 0, minLength = str.length() + 1, subStrStart = 0;

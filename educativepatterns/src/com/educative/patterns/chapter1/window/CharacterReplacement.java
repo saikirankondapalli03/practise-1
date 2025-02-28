@@ -11,7 +11,11 @@ import java.util.*;
  * So at any time, we know that we can have a window which has one letter repeating maxRepeatLetterCount times, this means we should try to replace the remaining letters.
  * If we have more than ‘k’ remaining letters, we should shrink the window as we are not allowed 
  * to replace more than ‘k’ letters.
+ * 
  */
+
+//https://takeuforward.org/plus/dsa/sliding-window-and-2-pointer/longest-and-smallest-window-problems/longest-repeating-character-replacement
+
 class CharacterReplacement {
 	public static int findLength(String str, int k) {
 		int windowStart = 0, maxLength = 0, maxRepeatLetterCount = 0;
@@ -44,7 +48,7 @@ class CharacterReplacement {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(CharacterReplacement.findLength("aabccbb", 2));
+		System.out.println(CharacterReplacement.findLength("abdghe", 2));
 		System.out.println(CharacterReplacement.findLength("abb", 2));
 		System.out.println(CharacterReplacement.findLength("abccdee", 4));
 	}

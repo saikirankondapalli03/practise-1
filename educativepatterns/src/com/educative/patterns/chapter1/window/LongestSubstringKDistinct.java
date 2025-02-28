@@ -2,6 +2,7 @@ package com.educative.patterns.chapter1.window;
 
 import java.util.*;
 
+//https://takeuforward.org/plus/dsa/sliding-window-and-2-pointer/longest-and-smallest-window-problems/longest-substring-with-at-most-k-distinct-characters
 class LongestSubstringKDistinct {
 	public static int findLength(String str, int k) {
 		if (str == null || str.length() == 0 || str.length() < k)
@@ -30,7 +31,7 @@ class LongestSubstringKDistinct {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("Length of the longest substring: " + LongestSubstringKDistinct.findLength("araaci", 2));
+		System.out.println("Length of the longest substring: " + LongestSubstringKDistinct.findLength("araacighjk", 2));
 		System.out.println("Length of the longest substring: " + LongestSubstringKDistinct.findLength("araaci", 1));
 		System.out.println("Length of the longest substring: " + LongestSubstringKDistinct.findLength("cbbebi", 3));
 	}
