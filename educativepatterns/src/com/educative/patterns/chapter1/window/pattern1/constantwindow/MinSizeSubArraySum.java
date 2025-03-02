@@ -7,6 +7,7 @@ package com.educative.patterns.chapter1.window.pattern1.constantwindow;
  * the length of the smallest contiguous subarray 
  * whose sum is greater than or equal to S. If there isn't one, return 0 instead.
  */
+//Completed: GOOD
 class MinSizeSubArraySum {
 	public static int findMinSubArray(int S, int[] arr) {
 		int windowSum = 0, minLength = Integer.MAX_VALUE;
