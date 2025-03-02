@@ -12,6 +12,7 @@ all the below problems, same pattern
 3. LongestSubarraySum
 4. NoRepeatSubString
 5. MaxSumSubArrayOfSizeK
+8. CharacterReplacement ( NoRepeatSubString variation) //TODO
  
 **some questions go for minimum subarray instead of maximum**
 6. MinSizeSubArraySum

@@ -1,4 +1,4 @@
-package com.educative.patterns.chapter1.window;
+package com.educative.patterns.chapter1.window.pattern1.constantwindow;
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ import java.util.*;
 //https://takeuforward.org/plus/dsa/sliding-window-and-2-pointer/longest-and-smallest-window-problems/longest-repeating-character-replacement
 
 //https://www.educative.io/courses/grokking-coding-interview/solution-longest-repeating-character-replacement
-
+//TODO
 class CharacterReplacement {
 	public static int findLength(String str, int k) {
 		int windowStart = 0, maxLength = 0, maxRepeatLetterCount = 0;
