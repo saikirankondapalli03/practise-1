@@ -1,5 +1,12 @@
 package com.educative.patterns.chapter1.window.pattern1.constantwindow;
 
+
+/*
+ * 
+ * "Given an array of positive integers and a positive integer S, write a function to find 
+ * the length of the smallest contiguous subarray 
+ * whose sum is greater than or equal to S. If there isn't one, return 0 instead.
+ */
 class MinSizeSubArraySum {
 	public static int findMinSubArray(int S, int[] arr) {
 		int windowSum = 0, minLength = Integer.MAX_VALUE;
@@ -19,7 +26,7 @@ class MinSizeSubArraySum {
 	}
 
 	public static void main(String[] args) {
-		int result = MinSizeSubArraySum.findMinSubArray(7, new int[] { 2, 1, 5, 2, 3, 2 });
+		int result = MinSizeSubArraySum.findMinSubArray(7, new int[] { 2, 0, 5, 2, 3, 2 });
 		System.out.println("Smallest subarray length: " + result);
 		result = MinSizeSubArraySum.findMinSubArray(7, new int[] { 2, 1, 5, 2, 8 });
 		System.out.println("Smallest subarray length: " + result);

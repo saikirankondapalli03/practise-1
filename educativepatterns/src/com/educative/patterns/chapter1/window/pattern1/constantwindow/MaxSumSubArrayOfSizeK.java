@@ -1,5 +1,12 @@
 package com.educative.patterns.chapter1.window.pattern1.constantwindow;
 
+
+
+/*
+ * 
+ * "Given an array of integers and a positive integer k, 
+ * write a function to find the maximum sum of any contiguous subarray of size k.
+ */
 class MaxSumSubArrayOfSizeK {
 	public static int findMaxSumSubArray(int k, int[] arr) {
 		int windowSum = 0, maxSum = 0;

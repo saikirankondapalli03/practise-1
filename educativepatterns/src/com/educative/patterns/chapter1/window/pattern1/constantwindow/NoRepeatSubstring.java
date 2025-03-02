@@ -1,8 +1,9 @@
-package com.educative.patterns.chapter1.window.pattern2.longestAndSmallestWindow;
+package com.educative.patterns.chapter1.window.pattern1.constantwindow;
 import java.util.*;
 
 
 //https://takeuforward.org/plus/dsa/sliding-window-and-2-pointer/longest-and-smallest-window-problems/longest-substring-without-repeating-characters
+//Completed: GOOD
 
 class NoRepeatSubstring {
   public static int findLength(String str) {
@@ -26,8 +27,8 @@ class NoRepeatSubstring {
   }
 
   public static void main(String[] args) {
-    System.out.println("Length of the longest substring: " + NoRepeatSubstring.findLength("aabccbb"));
-    System.out.println("Length of the longest substring: " + NoRepeatSubstring.findLength("abbbb"));
+    //System.out.println("Length of the longest substring: " + NoRepeatSubstring.findLength("aabccbb"));
+    //System.out.println("Length of the longest substring: " + NoRepeatSubstring.findLength("abbbb"));
     System.out.println("Length of the longest substring: " + NoRepeatSubstring.findLength("abccdefghij"));
   }
 }

@@ -1,6 +1,7 @@
 package com.educative.patterns.chapter1.window.pattern1.constantwindow;
 
 
+//Completed: GOOD
 //https://takeuforward.org/plus/dsa/sliding-window-and-2-pointer/pattern-and-template/theory
 public class LongestSubarraySum {
 
@@ -16,7 +17,7 @@ public class LongestSubarraySum {
             sum += arr[right]; // Add the current element to the sum
 
             // Shrink the window from the left if sum exceeds K
-            while (sum > K) {
+            if (sum > K) {
                 sum -= arr[left]; // Subtract the leftmost element from the sum
                 left++;           // Move the left pointer to the right
             }
@@ -29,7 +30,7 @@ public class LongestSubarraySum {
     }
 
     public static void main(String[] args) {
-        int[] arr = {2, 5, 1, 7, 10}; // Example array
+        int[] arr = {2, 15, 1, 7, 10}; // Example array
         int K = 14; // Example value of K
 
         // Find and print the length of the longest subarray with sum <= K

@@ -2,6 +2,9 @@ package com.educative.patterns.chapter1.window.pattern1.constantwindow;
 
 import java.util.Arrays;
 
+
+//Completed: GOOD
+
 class AverageOfSubarrayOfSizeK {
 	public static double[] findAverages(int K, int[] arr) {
 		double[] result = new double[arr.length - K + 1];
