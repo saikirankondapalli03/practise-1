@@ -1,4 +1,4 @@
-package com.educative.patterns.chapter1.window.pattern2.longestAndSmallestWindow;
+package com.educative.patterns.chapter1.window.pattern1.constantwindow;
 
 
 //https://takeuforward.org/plus/dsa/sliding-window-and-2-pointer/longest-and-smallest-window-problems/max-consecutive-ones-iii?tab=submissions
@@ -19,7 +19,7 @@ class ReplacingOnes {
 			// now, if the remaining 0s are more than 'k', it is the time to shrink the
 			// window as we
 			// are not allowed to replace more than 'k' Os
-			if (windowEnd - windowStart + 1 - maxOnesCount > k) {
+			if (windowEnd - windowStart + 1  > k + maxOnesCount) {
 				if (arr[windowStart] == 1)
 					maxOnesCount--;
 				windowStart++;

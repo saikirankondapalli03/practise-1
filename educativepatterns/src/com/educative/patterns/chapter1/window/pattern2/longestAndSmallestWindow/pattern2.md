@@ -7,15 +7,5 @@ for CountNumberSubArraysGivenSum.java problem
 ** the total possible arrays at given right pointer is rightpointer-leftpointer+1 which needs to be added to previous results. ** 
 
 all the below problems, same pattern
-1. AverageOfSubarrayOfSizeK
-2. CountNumberSubArraysGivenSum
-3. LongestSubarraySum
-4. NoRepeatSubString
-5. MaxSumSubArrayOfSizeK
-8. CharacterReplacement (NoRepeatSubString variation) //TODO
-9. ReplacingOnes (Same as CharacterReplacement)  //TODO
-**some questions go for minimum subarray instead of maximum**
-6. MinSizeSubArraySum
-
-**variation of sliding : remove from front and add from last ** 
-7. MaximumCardsSum
+1. LongestSubStringKDistinct
+2. MaxFruitCountOf2Types ( exactly same as LongestSubStringKDistinct)
