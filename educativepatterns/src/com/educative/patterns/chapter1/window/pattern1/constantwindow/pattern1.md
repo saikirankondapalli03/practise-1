@@ -16,3 +16,5 @@ all the below problems, same pattern
 **some questions go for minimum subarray instead of maximum**
 6. MinSizeSubArraySum
 
+**variation of sliding : remove from front and add from last ** 
+7. MaximumCardsSum
