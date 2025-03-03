@@ -19,3 +19,6 @@ all the below problems, same pattern
 
 **variation of sliding : remove from front and add from last ** 
 7. MaximumCardsSum
+
+** maximum (or) minimum Sliding window ** 
+10.

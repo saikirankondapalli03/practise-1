@@ -6,6 +6,66 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 public class MaximumSlidingWindow {
+	
+	  public static int[] maxSlidingWindow(int[] nums, int k) {
+	        if (nums == null || nums.length == 0 || k == 0) {
+	            return new int[0];
+	        }
+
+	        int n = nums.length;
+	        int[] leftMax = new int[n];
+	        int[] rightMax = new int[n];
+	        int[] result = new int[n - k + 1];
+
+	        // Compute leftMax array
+	        for (int i = 0; i < n; i++) {
+	            if (i % k == 0) {
+	                leftMax[i] = nums[i];
+	            } else {
+	                leftMax[i] = Math.max(leftMax[i - 1], nums[i]);
+	            }
+	        }
+
+	        // Compute rightMax array
+	        for (int i = n - 1; i >= 0; i--) {
+	            if (i % k == 0 || i == n - 1) {
+	                rightMax[i] = nums[i];
+	            } else {
+	                rightMax[i] = Math.max(rightMax[i + 1], nums[i]);
+	            }
+	        }
+
+	        // Compute sliding window maximum
+	        for (int i = 0; i <= n - k; i++) {
+	            result[i] = Math.max(rightMax[i], leftMax[i + k - 1]);
+	        }
+
+	        return result;
+	    }
+	  
+	  
+	  
+	  public static int[] maxSlidingWindowSimple(int[] nums, int k) {
+		    if (nums == null || nums.length == 0 || k == 0) {
+		        return new int[0];
+		    }
+
+		    int n = nums.length;
+		    int[] result = new int[n - k + 1];
+		    int resultIndex = 0;
+
+		    for (int i = 0; i <= n - k; i++) {
+		        int maxVal = nums[i];
+		        for (int j = i; j < i + k; j++) {
+		            maxVal = Math.max(maxVal, nums[j]);
+		        }
+		        result[resultIndex++] = maxVal;
+		    }
+
+		    return result;
+		}
+	  
+	  
 	public static ArrayDeque<Integer> findMaxSlidingWindow(int[] arr, int windowSize) {
 
 		ArrayDeque<Integer> result = new ArrayDeque<>(); // ArrayDeque for storing values
