@@ -9,8 +9,8 @@
 9. max-min-heap-combo
 10. Subsets
 11. Binary search and its variants
-12. 
-13.find Top k Elements
+12. bitwise
+13. find Top k Elements
 14. mergekArrays
 15. dp 
 16. topological sort
