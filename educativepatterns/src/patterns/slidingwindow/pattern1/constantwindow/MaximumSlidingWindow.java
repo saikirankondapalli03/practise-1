@@ -152,7 +152,7 @@ public class MaximumSlidingWindow {
 
 		int[] array = { 3,1, 2, 4, 5, 6, 7, 8, 9, 10 };
 		System.out.println("Array = " + Arrays.toString(array));
-		System.out.println("Max = " + Arrays.toString(findMaxSlidingWindow(array, 3)));
+		System.out.println("Max = " + Arrays.toString(maxSlidingWindowUsingHeap(array, 3)));
 
 		int[] array2 = { 10, 6, 9, -3, 23, -1, 34, 56, 67, -1, -4, -8, -2, 9, 10, 34, 67 };
 
