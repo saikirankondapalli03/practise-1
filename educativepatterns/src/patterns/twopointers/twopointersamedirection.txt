@@ -1,0 +1,15 @@
+public static void twoPointersSame(int[] arr) {
+    int slow = 0, fast = 0;
+    while (fast < arr.length) {
+        // Process current elements
+        int current = process(arr[slow], arr[fast]);
+        
+        // Update pointers based on condition
+        if (condition(arr[slow], arr[fast])) {
+            slow++;
+        }
+        
+        // Fast pointer always moves forward
+        fast++;
+    }
+}

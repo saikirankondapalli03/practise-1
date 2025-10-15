@@ -1,0 +1,10 @@
+public static void monoStack(List<Integer> insertEntries) {
+    ArrayList<Integer> stack;
+    for (int entry : insertEntries) {
+        while (!stack.isEmpty() && stack.get(stack.size() - 1) <= entry) {
+            stack.remove(stack.size() - 1);
+            // Do something with the popped item here
+        }
+        stack.add(entry);
+    }
+}

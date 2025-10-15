@@ -1,0 +1,14 @@
+public static void twoPointersOpposite(int[] arr) {
+    int left = 0, right = arr.length - 1;
+    while (left < right) {
+        // Process current elements
+        int current = process(arr[left], arr[right]);
+        
+        // Update pointers based on condition
+        if (condition(arr[left], arr[right])) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+}

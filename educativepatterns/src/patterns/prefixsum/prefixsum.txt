@@ -1,0 +1,17 @@
+public static int[] buildPrefixSum(int[] arr) {
+    int n = arr.length;
+    int[] prefixSum = new int[n];
+    prefixSum[0] = arr[0];
+    for (int i = 1; i < n; i++) {
+        prefixSum[i] = prefixSum[i-1] + arr[i];
+    }
+    return prefixSum;
+}
+
+// Query sum of range [left, right] (inclusive)
+public static int queryRange(int[] prefixSum, int left, int right) {
+    if (left == 0) {
+        return prefixSum[right];
+    }
+    return prefixSum[right] - prefixSum[left-1];
+}
