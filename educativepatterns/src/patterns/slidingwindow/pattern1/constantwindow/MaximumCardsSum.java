@@ -41,7 +41,7 @@ public class MaximumCardsSum {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(MaximumCardsSum.maxScore(new int[] { 1, 2, 3, 4, 5, 6 }, 3));
+		System.out.println(MaximumCardsSum.maxScore(new int[] {1, 2, 3, 4, 5, 6, 1}, 3));
 		System.out.println(MaximumCardsSum.maxScore(new int[] { 5, 4, 1, 8, 7, 1, 3 }, 3));
 		System.out.println(MaximumCardsSum.maxScore(new int[] { 9, 10, 1, 2, 3, 5 }, 5));
 	}

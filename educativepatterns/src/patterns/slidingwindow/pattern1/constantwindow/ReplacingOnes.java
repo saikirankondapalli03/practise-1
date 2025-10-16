@@ -19,6 +19,12 @@ class ReplacingOnes {
 			// now, if the remaining 0s are more than 'k', it is the time to shrink the
 			// window as we
 			// are not allowed to replace more than 'k' Os
+			
+			/*
+			 * 
+			 * “If the window is larger than what I can turn entirely into 1s
+(real ones + allowed flips), then it’s invalid — shrink from the left.”
+			 */
 			if (windowEnd - windowStart + 1  > k + maxOnesCount) {
 				if (arr[windowStart] == 1)
 					maxOnesCount--;
@@ -29,6 +35,22 @@ class ReplacingOnes {
 		}
 
 		return maxLength;
+	}
+	
+	public static int longestOnesAfterKFlips(int[] arr, int k) {
+	    int windowStart = 0, maxLength = 0, zerosInWindow = 0;
+
+	    for (int windowEnd = 0; windowEnd < arr.length; windowEnd++) {
+	        if (arr[windowEnd] == 0) zerosInWindow++;
+
+	        while (zerosInWindow > k) {
+	            if (arr[windowStart] == 0) zerosInWindow--;
+	            windowStart++;
+	        }
+
+	        maxLength = Math.max(maxLength, windowEnd - windowStart + 1);
+	    }
+	    return maxLength;
 	}
 
 	public static void main(String[] args) {

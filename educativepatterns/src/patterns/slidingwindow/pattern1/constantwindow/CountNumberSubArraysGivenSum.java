@@ -51,36 +51,52 @@ public class CountNumberSubArraysGivenSum {
         return atMostS - atMostSMinus1;
     }
 
-    private int atMost(int[] A, int S) {
-        // If S is negative, no valid subarrays exist
-        if (S < 0) return 0;
+    private int atMost(int[] nums, int maxAllowedSum) {
+        // No valid subarrays possible if target sum is negative
+        if (maxAllowedSum < 0) return 0;
 
-        int res = 0;  // Variable to store the total count of valid subarrays
-        int i = 0;    // Left pointer of the sliding window
+        int totalValidSubarrays = 0;   // Total count of valid subarrays
+        int windowStart = 0;           // Left boundary of the sliding window
 
-        // Sliding window approach to count subarrays
-        for (int j = 0; j < A.length; j++) {
-            // Include A[j] in the current window by subtracting it from S
-            // S now represents the remaining sum we can accommodate
-            S -= A[j];  
+        // Iterate with the right boundary of the window
+        for (int windowEnd = 0; windowEnd < nums.length; windowEnd++) {
 
-            // If S becomes negative, we need to shrink the window from the left
-            while (S < 0) {
-                // Add back the leftmost element of the window to S
-                // and move the left pointer (i) to the right
-                S += A[i++];  
+            // Include the current element in the window
+            maxAllowedSum -= nums[windowEnd];
+
+            // Shrink the window from the left until the total sum <= allowed sum
+            while (maxAllowedSum < 0) {
+                maxAllowedSum += nums[windowStart];
+                windowStart++;
             }
 
-            // At this point, the subarray A[i] to A[j] has sum <= original S
-            // Count all subarrays ending at index j:
-            // There are (j - i + 1) such subarrays, namely:
-            // A[j], A[j-1]...A[j], A[j-2]...A[j], ..., A[i]...A[j]
-            res += j - i + 1; 
+            // Every subarray ending at 'windowEnd' and starting between
+            // 'windowStart' and 'windowEnd' (inclusive) has sum <= original maxAllowedSum
+            totalValidSubarrays += windowEnd - windowStart + 1;
         }
 
-        // Return the total count of subarrays with sum <= S
-        return res;
+        // Return total count of subarrays with sum <= maxAllowedSum
+        return totalValidSubarrays;
     }
+    
+    
+    int atMost1(int[] nums, int K) {
+        if (K < 0) return 0;         // base case
+        int left = 0, count = 0, sum = 0;
+
+        for (int right = 0; right < nums.length; right++) {
+            sum += nums[right];       // expand window
+
+            while (sum > K) {         // shrink until valid
+                sum -= nums[left];
+                left++;
+            }
+
+            count += right - left + 1; // all subarrays ending at 'right'
+        }
+        return count;
+    }
+    
     
     public static void main(String[] args) {
     	CountNumberSubArraysGivenSum sol = new CountNumberSubArraysGivenSum();

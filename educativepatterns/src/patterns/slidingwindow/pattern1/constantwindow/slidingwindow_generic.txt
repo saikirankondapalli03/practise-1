@@ -1,0 +1,6 @@
+expand right boundary
+update state
+while (window invalid):
+    undo leftmost element’s effect
+    move left boundary
+update best result
