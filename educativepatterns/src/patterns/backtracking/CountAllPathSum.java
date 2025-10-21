@@ -1,4 +1,4 @@
-package patterns.dfs;
+package patterns.backtracking;
 
 import java.util.LinkedList;
 import java.util.List;
