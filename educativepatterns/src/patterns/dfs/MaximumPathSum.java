@@ -17,11 +17,6 @@ class MaximumPathSum {
 		int maxPathSumFromLeft = findMaximumPathSumRecursive(currentNode.left);
 		int maxPathSumFromRight = findMaximumPathSumRecursive(currentNode.right);
 
-		int localMaximumSum = maxPathSumFromLeft + maxPathSumFromRight + currentNode.val;
-
-		// update the global maximum sum
-		globalMaximumSum = Math.max(globalMaximumSum, localMaximumSum);
-		System.out.println(globalMaximumSum);
 		// maximum sum of any path from the current node will be equal to the maximum of
 		// the sums from left or right subtrees plus the value of the current node
 		int result=Math.max(maxPathSumFromLeft, maxPathSumFromRight) + currentNode.val;

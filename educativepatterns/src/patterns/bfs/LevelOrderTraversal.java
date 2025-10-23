@@ -33,6 +33,35 @@ class LevelOrderTraversal {
 		return result;
 	}
 
+	
+	public static List<List<Integer>> traverseReverse(TreeNode root) {
+		List<List<Integer>> result = new LinkedList<List<Integer>>();
+		if (root == null)
+			return result;
+
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+		while (!queue.isEmpty()) {
+			int levelSize = queue.size();
+			List<Integer> currentLevel = new ArrayList<>(levelSize);
+			for (int i = 0; i < levelSize; i++) {
+				TreeNode currentNode = queue.poll();
+				// add the node to the current level
+				currentLevel.add(currentNode.val);
+				// insert the children of current node to the queue
+				if (currentNode.left != null)
+					queue.offer(currentNode.left);
+				if (currentNode.right != null)
+					queue.offer(currentNode.right);
+			}
+			// append the current level at the beginning
+			result.add(0, currentLevel);
+		}
+
+		return result;
+	}
+	
+	
 	// done
 	public static List<Integer> getLevelOrder(TreeNode root) {
 		List<Integer> output = new ArrayList<Integer>();
