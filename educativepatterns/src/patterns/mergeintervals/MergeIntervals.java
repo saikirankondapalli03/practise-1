@@ -14,7 +14,7 @@ class Interval {
 
 class MergeIntervals {
 
-	public static List<Interval> merge(List<Interval> intervals) {
+	public static List<Interval> merge1(List<Interval> intervals) {
 		if (intervals.size() < 2)
 			return intervals;
 
@@ -77,5 +77,38 @@ class MergeIntervals {
 		for (Interval interval : MergeIntervals.merge(input))
 			System.out.print("[" + interval.start + "," + interval.end + "] ");
 		System.out.println();
+	}
+
+
+	public static List<Interval> merge(List<Interval> intervals) {
+		if (intervals.size() < 2) return intervals;
+
+		// Sub-problem 3: Sort by start time
+		Collections.sort(intervals, (a, b) -> a.start - b.start);
+
+		List<Interval> result = new ArrayList<>();
+
+		// Start with first interval
+		int currentStart = intervals.get(0).start;
+		int currentEnd = intervals.get(0).end;
+
+		for (int i = 1; i < intervals.size(); i++) {
+			Interval next = intervals.get(i);
+
+			// Sub-problem 1: Check if they overlap
+			if (next.start <= currentEnd) {
+				// Sub-problem 2: Merge them
+				currentEnd = Math.max(currentEnd, next.end);
+			} else {
+				// No overlap - save current and start new
+				result.add(new Interval(currentStart, currentEnd));
+				currentStart = next.start;
+				currentEnd = next.end;
+			}
+		}
+
+		// Don't forget the last interval
+		result.add(new Interval(currentStart, currentEnd));
+		return result;
 	}
 }

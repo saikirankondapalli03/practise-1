@@ -17,6 +17,28 @@ class Job {
 class MaximumCPULoad {
 
 	public static int findMaxCPULoad(List<Job> jobs) {
+		List<int[]> events = new ArrayList<>();
+
+		// Create events: [time, +load] for start, [time, -load] for end
+		for (Job job : jobs) {
+			events.add(new int[]{job.start, job.cpuLoad});
+			events.add(new int[]{job.end, -job.cpuLoad});
+		}
+
+		// Sort by time, process end events before start events at same time
+		events.sort((a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+
+		int maxLoad = 0, currentLoad = 0;
+		for (int[] event : events) {
+			currentLoad += event[1];
+			maxLoad = Math.max(maxLoad, currentLoad);
+		}
+
+		return maxLoad;
+	}
+
+
+	public static int findMaxCPULoad1(List<Job> jobs) {
 		// sort the jobs by start time
 		Collections.sort(jobs, (a, b) -> Integer.compare(a.start, b.start));
 
