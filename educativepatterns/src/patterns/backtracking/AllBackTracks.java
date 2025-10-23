@@ -13,18 +13,6 @@ public class AllBackTracks {
 		return list;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	private static void backtrack(List<List<Integer>> result, List<Integer> tempList, int[] nums, int start) {
 		result.add(new ArrayList<>(tempList));
 		for (int i = start; i < nums.length; i++) {
@@ -34,24 +22,6 @@ public class AllBackTracks {
 		}
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public static void main(String[] args) {
 		// initializing vector
 		int[] myints = { 2, 5, 4, 1 };
