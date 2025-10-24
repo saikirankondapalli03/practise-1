@@ -19,7 +19,7 @@ public class YahooCompleteGuide {
     // ========== 1. TWO POINTERS ==========
     
     /**
-     * Two Sum (sorted array)
+     * 1A. Two Sum (sorted array)
      * Time: O(n) - single pass with two pointers
      * Space: O(1) - only using pointer variables
      */
@@ -35,7 +35,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Remove Duplicates
+     * 1B. Remove Duplicates
      * Time: O(n) - single pass through array
      * Space: O(1) - in-place modification with slow/fast pointers
      */
@@ -50,7 +50,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Palindrome Check
+     * 1C. Palindrome Check
      * Time: O(n) - single pass with two pointers
      * Space: O(1) - only pointer variables
      */
@@ -64,7 +64,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Container With Most Water
+     * 1D. Container With Most Water
      * Time: O(n) - single pass with two pointers
      * Space: O(1) - only storing max area and pointers
      */
@@ -85,7 +85,7 @@ public class YahooCompleteGuide {
     // ========== 2. SLIDING WINDOW ==========
     
     /**
-     * Fixed Size Window - Maximum Sum Subarray
+     * 2A. Fixed Size Window - Maximum Sum Subarray
      * Time: O(n) - slide window across array once
      * Space: O(1) - only storing window sum and maximum
      */
@@ -102,7 +102,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Longest Substring Without Repeating Characters
+     * 2B. Longest Substring Without Repeating Characters
      * Time: O(n) - each character visited at most twice
      * Space: O(min(m,n)) - HashSet size limited by charset or string length
      */
@@ -121,7 +121,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Minimum Window Substring
+     * 2C. Minimum Window Substring
      * Time: O(|s| + |t|) - each character processed once
      * Space: O(|s| + |t|) - HashMap storage for character frequencies
      */
@@ -157,7 +157,7 @@ public class YahooCompleteGuide {
     // ========== 3. BINARY SEARCH ==========
     
     /**
-     * Basic Binary Search
+     * 3A. Basic Binary Search
      * Time: O(log n) - halve search space each iteration
      * Space: O(1) - only using pointer variables
      */
@@ -173,7 +173,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Find First Occurrence
+     * 3B. Find First Occurrence
      * Time: O(log n) - binary search with left bias
      * Space: O(1) - constant extra variables
      */
@@ -191,7 +191,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Search in Rotated Sorted Array
+     * 3C. Search in Rotated Sorted Array
      * Time: O(log n) - modified binary search, still halves space
      * Space: O(1) - no extra data structures needed
      */
@@ -216,7 +216,7 @@ public class YahooCompleteGuide {
     // ========== 4. DFS/BFS ==========
     
     /**
-     * Number of Islands
+     * 4A. Number of Islands
      * Time: O(m×n) - visit each cell at most once across all DFS calls
      * Space: O(m×n) - recursion stack depth in worst case
      */
@@ -243,7 +243,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Flood Fill
+     * 4B. Flood Fill
      * Time: O(m×n) - DFS visits each connected cell once
      * Space: O(m×n) - recursion stack for DFS calls
      */
@@ -267,7 +267,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * BFS Shortest Path
+     * 4C. BFS Shortest Path
      * Time: O(m×n) - visit each cell once in BFS
      * Space: O(m×n) - queue and visited array storage
      */
@@ -300,7 +300,7 @@ public class YahooCompleteGuide {
     // ========== 5. BACKTRACKING ==========
     
     /**
-     * Permutations (No reuse)
+     * 5A. Permutations (No reuse)
      * Time: O(n! × n) - n! permutations, each takes O(n) time to construct
      * Space: O(n) - recursion depth and path storage
      */
@@ -328,7 +328,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Combinations (No reuse)
+     * 5B. Combinations (No reuse)
      * Time: O(C(n,k) × k) - C(n,k) combinations, each takes O(k) to build
      * Space: O(k) - recursion depth limited by combination size
      */
@@ -352,7 +352,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Subsets (No reuse)
+     * 5C. Subsets (No reuse)
      * Time: O(2^n × n) - 2^n subsets, each takes O(n) to build
      * Space: O(n) - recursion depth
      */
@@ -373,7 +373,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Combination Sum (WITH reuse)
+     * 5D. Combination Sum (WITH reuse)
      * Time: O(2^target) - exponential based on target value
      * Space: O(target) - recursion depth limited by target
      */
@@ -398,7 +398,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Generate Parentheses
+     * 5E. Generate Parentheses
      * Time: O(4^n / √n) - Catalan number, approximately 4^n combinations
      * Space: O(n) - recursion depth limited by string length
      */
@@ -423,7 +423,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Word Search (Matrix backtracking)
+     * 5F. Word Search (Matrix backtracking)
      * Time: O(4^(m×n)) - worst case explores all paths
      * Space: O(m×n) - recursion stack depth
      */
@@ -457,7 +457,7 @@ public class YahooCompleteGuide {
     // ========== 6. DYNAMIC PROGRAMMING ==========
     
     /**
-     * Maximum Subarray - Kadane's Algorithm
+     * 6A. Maximum Subarray - Kadane's Algorithm
      * Time: O(n) - single pass through array
      * Space: O(1) - only two variables for tracking current and global max
      */
@@ -473,7 +473,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Climbing Stairs
+     * 6B. Climbing Stairs
      * Time: O(n) - compute each step once
      * Space: O(1) - optimized to use only two variables
      */
@@ -490,7 +490,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Coin Change
+     * 6C. Coin Change
      * Time: O(amount × coins) - nested loops to fill DP table
      * Space: O(amount) - DP array of size amount+1
      */
@@ -510,7 +510,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Unique Paths (2D DP)
+     * 6D. Unique Paths (2D DP)
      * Time: O(m×n) - fill entire DP table
      * Space: O(m×n) - 2D DP array storage
      */
@@ -531,7 +531,7 @@ public class YahooCompleteGuide {
     // ========== 7. ADVANCED PATTERNS ==========
     
     /**
-     * Valid Parentheses
+     * 7A. Valid Parentheses
      * Time: O(n) - single pass through string
      * Space: O(n) - stack can hold up to n/2 opening brackets
      */
@@ -554,7 +554,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Trapping Rain Water
+     * 7B. Trapping Rain Water
      * Time: O(n) - single pass with two pointers
      * Space: O(1) - only pointer and height variables
      */
@@ -583,7 +583,7 @@ public class YahooCompleteGuide {
     }
     
     /**
-     * Reverse Linked List
+     * 7C. Reverse Linked List
      * Time: O(n) - visit each node exactly once
      * Space: O(1) - only pointer variables, no recursion
      */
