@@ -1,56 +1,75 @@
 package com.patterns.backtracking.pattern6wordproblems;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+/*
+ * PROBLEM: Letter Combinations of a Phone Number
+ * 
+ * Given a string containing digits from 2-9, return all possible letter combinations
+ * that the number could represent (like on old phone keypads).
+ * 
+ * Mapping:
+ * 2: abc, 3: def, 4: ghi, 5: jkl, 6: mno, 7: pqrs, 8: tuv, 9: wxyz
+ * 
+ * Example:
+ * Input: "23"
+ * Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]
+ */
 
 class PhoneNumber {
-	static Map<String, String> phone = new HashMap<String, String>() {
-		{
-			put("2", "abc");
-			put("3", "def");
-			put("4", "ghi");
-			put("5", "jkl");
-			put("6", "mno");
-			put("7", "pqrs");
-			put("8", "tuv");
-			put("9", "wxyz");
-		}
-	};
-
-	static List<String> output = new ArrayList<String>();
-
-	public static void backtrack(String combination, String next_digits) {
-		// if there is no more digits to check
-		if (next_digits.length() == 0) {
-			// the combination is done
-			output.add(combination);
-		}
-		// if there are still digits to check
-		else {
-			// iterate over all letters which map
-			// the next available digit
-			String digit = next_digits.substring(0, 1);
-			String letters = phone.get(digit);
-			for (int i = 0; i < letters.length(); i++) {
-				String letter = phone.get(digit).substring(i, i + 1);
-				// append the current letter to the combination
-				// and proceed to the next digits
-				backtrack(combination + letter, next_digits.substring(1));
-			}
-		}
-	}
-
+	
+	// STANDARD BACKTRACKING TEMPLATE
+	// Time Complexity: O(4^n) where n is length of digits
+	// Space Complexity: O(4^n) for storing all combinations
 	public static List<String> letterCombinations(String digits) {
-		if (digits.length() != 0)
-			backtrack("", digits);
-		return output;
+		List<String> result = new ArrayList<>();
+		if (digits.isEmpty()) return result;
+		
+		// Digit to letters mapping
+		String[] mapping = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+		
+		backtrack(digits, 0, new StringBuilder(), result, mapping);
+		return result;
+	}
+	
+	/*
+	 * BACKTRACKING TEMPLATE:
+	 * 1. Base case: when to stop and save result
+	 * 2. Get choices: what options do I have at current state
+	 * 3. Try each choice: choose → explore → unchoose
+	 */
+	private static void backtrack(String digits, int index, StringBuilder current, 
+			                     List<String> result, String[] mapping) {
+		
+		// BASE CASE: processed all digits
+		if (index == digits.length()) {
+			result.add(current.toString());
+			return;
+		}
+		
+		// GET CHOICES: letters for current digit
+		String letters = mapping[digits.charAt(index) - '0'];
+		
+		// TRY EACH CHOICE
+		for (char letter : letters.toCharArray()) {
+			// CHOOSE: add letter to current path
+			current.append(letter);
+			
+			// EXPLORE: move to next digit
+			backtrack(digits, index + 1, current, result, mapping);
+			
+			// UNCHOOSE: remove letter (backtrack)
+			current.deleteCharAt(current.length() - 1);
+		}
 	}
 
 	public static void main(String[] args) {
-
-		System.out.println(PhoneNumber.letterCombinations("23"));
+		String input = "23";
+		System.out.println("Input: " + input);
 		
+		List<String> result = letterCombinations(input);
+		System.out.println("Output: " + result);
+		// Expected: [ad, ae, af, bd, be, bf, cd, ce, cf]
 	}
 }
