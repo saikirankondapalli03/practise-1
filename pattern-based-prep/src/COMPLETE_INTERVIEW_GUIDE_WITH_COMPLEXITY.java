@@ -38,39 +38,54 @@ public class CompleteInterviewGuide {
     // Time: O(n), Space: O(1)
     // Variant A: Two Sum (sorted array)
     public static int[] twoSum(int[] arr, int target) {
-    int left = 0, right = arr.length - 1;
-    while (left < right) {
-        int sum = arr[left] + arr[right];
-        if (sum == target) return new int[]{left, right};
-        else if (sum < target) left++;
-        else right--;
+    // "I'll use two pointers since the array is sorted"
+    int windowStart = 0, windowEnd = arr.length - 1;
+    
+    while (windowStart < windowEnd) {
+        int currentSum = arr[windowStart] + arr[windowEnd];
+        
+        if (currentSum == target) {
+            return new int[]{windowStart, windowEnd}; // "Found the pair!"
+        } else if (currentSum < target) {
+            windowStart++; // "Need larger sum, move left pointer right"
+        } else {
+            windowEnd--; // "Need smaller sum, move right pointer left"
+        }
     }
-    return new int[]{-1, -1};
+    return new int[]{-1, -1}; // "No valid pair found"
 }
 
     
     // Time: O(n), Space: O(1)
     // Variant B: Remove duplicates
     public static int removeDuplicates(int[] nums) {
-    int slow = 0;
-    for (int fast = 1; fast < nums.length; fast++) {
-        if (nums[fast] != nums[slow]) {
-            nums[++slow] = nums[fast];
+    // "I'll use slow-fast pointers to remove duplicates in-place"
+    int writeIndex = 0;
+    
+    for (int readIndex = 1; readIndex < nums.length; readIndex++) {
+        if (nums[readIndex] != nums[writeIndex]) {
+            // "Found a new unique element, write it to the next position"
+            nums[++writeIndex] = nums[readIndex];
         }
+        // "Skip duplicates by just moving read pointer"
     }
-    return slow + 1;
+    return writeIndex + 1; // "Return length of unique array"
 }
 
     
     // Time: O(n), Space: O(1)
     // Variant C: Palindrome check
     public static boolean isPalindrome(String s) {
-    int left = 0, right = s.length() - 1;
-    while (left < right) {
-        if (s.charAt(left) != s.charAt(right)) return false;
-        left++; right--;
+    // "I'll use two pointers from both ends moving inward"
+    int leftPointer = 0, rightPointer = s.length() - 1;
+    
+    while (leftPointer < rightPointer) {
+        if (s.charAt(leftPointer) != s.charAt(rightPointer)) {
+            return false; // "Characters don't match, not a palindrome"
+        }
+        leftPointer++; rightPointer--; // "Move both pointers inward"
     }
-    return true;
+    return true; // "All characters matched, it's a palindrome"
 }
 
     
@@ -78,19 +93,20 @@ public class CompleteInterviewGuide {
 // Time: O(n), Space: O(1)
 // Variant A: Fixed size window
 public static int maxSumSubarray(int[] arr, int windowSize) {
+    // "I'll use sliding window technique for fixed size subarray"
     int maxSum = 0, currentWindowSum = 0;
 
-    // Calculate sum of first window
+    // "First, calculate sum of initial window"
     for (int i = 0; i < windowSize; i++) {
         currentWindowSum += arr[i];
     }
     maxSum = currentWindowSum;
 
-    // Slide the window: remove leftmost, add rightmost
+    // "Now slide the window: remove left element, add right element"
     for (int windowEnd = windowSize; windowEnd < arr.length; windowEnd++) {
         int windowStart = windowEnd - windowSize;
-        currentWindowSum += arr[windowEnd] - arr[windowStart];
-        maxSum = Math.max(maxSum, currentWindowSum);
+        currentWindowSum += arr[windowEnd] - arr[windowStart]; // "Slide operation"
+        maxSum = Math.max(maxSum, currentWindowSum); // "Track maximum"
     }
     return maxSum;
 }
@@ -172,29 +188,42 @@ public static String findMinimumWindowSubstring(String sourceString, String targ
 // Time: O(log n), Space: O(1)
 // Variant A: Basic binary search
 int binarySearch(int[] arr, int target) {
-    int left = 0, right = arr.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (arr[mid] == target) return mid;
-        else if (arr[mid] < target) left = mid + 1;
-        else right = mid - 1;
+    // "I'll use binary search since array is sorted"
+    int leftBound = 0, rightBound = arr.length - 1;
+    
+    while (leftBound <= rightBound) {
+        int midPoint = leftBound + (rightBound - leftBound) / 2; // "Avoid overflow"
+        
+        if (arr[midPoint] == target) {
+            return midPoint; // "Found the target!"
+        } else if (arr[midPoint] < target) {
+            leftBound = midPoint + 1; // "Target is in right half"
+        } else {
+            rightBound = midPoint - 1; // "Target is in left half"
+        }
     }
-    return -1;
+    return -1; // "Target not found"
 }
 
 // Time: O(log n), Space: O(1)
 // Variant B: Find first occurrence
 int findFirst(int[] arr, int target) {
-    int left = 0, right = arr.length - 1, result = -1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (arr[mid] == target) {
-            result = mid;
-            right = mid - 1; // Continue searching left
-        } else if (arr[mid] < target) left = mid + 1;
-        else right = mid - 1;
+    // "I need to find leftmost occurrence, so I'll keep searching left even after finding target"
+    int leftBound = 0, rightBound = arr.length - 1, firstIndex = -1;
+    
+    while (leftBound <= rightBound) {
+        int midPoint = leftBound + (rightBound - leftBound) / 2;
+        
+        if (arr[midPoint] == target) {
+            firstIndex = midPoint; // "Save this position"
+            rightBound = midPoint - 1; // "But keep searching left for earlier occurrence"
+        } else if (arr[midPoint] < target) {
+            leftBound = midPoint + 1;
+        } else {
+            rightBound = midPoint - 1;
+        }
     }
-    return result;
+    return firstIndex;
 }
 
 // Time: O(log n), Space: O(1)
@@ -221,24 +250,34 @@ int searchRotated(int[] nums, int target) {
 // Time: O(m*n), Space: O(m*n) for recursion stack
 // Variant A: Count islands
 int numIslands(char[][] grid) {
-    int count = 0;
-    for (int i = 0; i < grid.length; i++) {
-        for (int j = 0; j < grid[0].length; j++) {
-            if (grid[i][j] == '1') {
-                dfsIsland(grid, i, j);
-                count++;
+    // "I'll iterate through each cell and start DFS when I find land"
+    int islandCount = 0;
+    
+    for (int row = 0; row < grid.length; row++) {
+        for (int col = 0; col < grid[0].length; col++) {
+            if (grid[row][col] == '1') {
+                // "Found unvisited land, start DFS to mark entire island"
+                dfsMarkIsland(grid, row, col);
+                islandCount++; // "Increment island count"
             }
         }
     }
-    return count;
+    return islandCount;
 }
-void dfsIsland(char[][] grid, int row, int col) {
-    if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length || grid[row][col] == '0') return;
-    grid[row][col] = '0'; // Mark as visited
-    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-    for (int[] dir : dirs) {
-        dfsIsland(grid, row + dir[0], col + dir[1]);
+
+void dfsMarkIsland(char[][] grid, int row, int col) {
+    // "Check boundaries and if current cell is water or already visited"
+    if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length || grid[row][col] == '0') {
+        return;
     }
+    
+    grid[row][col] = '0'; // "Mark as visited by changing to water"
+    
+    // "Explore all 4 directions: up, down, left, right"
+    dfsMarkIsland(grid, row + 1, col); // Down
+    dfsMarkIsland(grid, row - 1, col); // Up
+    dfsMarkIsland(grid, row, col + 1); // Right
+    dfsMarkIsland(grid, row, col - 1); // Left
 }
 
 // Time: O(m*n), Space: O(m*n) for recursion stack
@@ -455,15 +494,19 @@ List<String> buildBoard(int[] queens, int n) {
 // Time: O(n), Space: O(1)
 // Variant A: Fibonacci/Climbing stairs
 int climbStairs(int n) {
+    // "Base cases: 1 step = 1 way, 2 steps = 2 ways"
     if (n <= 2) return n;
-    int prev2 = 1, prev1 = 2;
     
-    for (int i = 3; i <= n; i++) {
-        int curr = prev1 + prev2;
-        prev2 = prev1;
-        prev1 = curr;
+    // "I'll use bottom-up DP with space optimization"
+    int twoStepsBack = 1, oneStepBack = 2;
+    
+    for (int currentStep = 3; currentStep <= n; currentStep++) {
+        int waysToCurrentStep = oneStepBack + twoStepsBack; // "Sum of previous two"
+        // "Slide the window forward"
+        twoStepsBack = oneStepBack;
+        oneStepBack = waysToCurrentStep;
     }
-    return prev1;
+    return oneStepBack;
 }
 
 // Time: O(amount * coins), Space: O(amount)
@@ -505,17 +548,19 @@ int uniquePaths(int m, int n) {
 // Time: O(n), Space: O(1)
 // Variant A: Single transaction (buy once, sell once)
 int maxProfit(int[] prices) {
-    int minPrice = Integer.MAX_VALUE;
-    int maxProfit = 0;
+    // "I'll track minimum price seen so far and maximum profit"
+    int lowestPriceSoFar = Integer.MAX_VALUE;
+    int maxProfitSoFar = 0;
     
-    for (int price : prices) {
-        if (price < minPrice) {
-            minPrice = price;
-        } else if (price - minPrice > maxProfit) {
-            maxProfit = price - minPrice;
+    for (int currentPrice : prices) {
+        if (currentPrice < lowestPriceSoFar) {
+            lowestPriceSoFar = currentPrice; // "Found new minimum buy price"
+        } else {
+            int profitIfSoldToday = currentPrice - lowestPriceSoFar;
+            maxProfitSoFar = Math.max(maxProfitSoFar, profitIfSoldToday); // "Update max profit"
         }
     }
-    return maxProfit;
+    return maxProfitSoFar;
 }
 
 // Time: O(n), Space: O(1)
