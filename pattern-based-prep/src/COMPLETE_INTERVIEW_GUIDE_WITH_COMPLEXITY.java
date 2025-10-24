@@ -228,22 +228,35 @@ int findFirst(int[] arr, int target) {
 
 // Time: O(log n), Space: O(1)
 // Variant C: Search in rotated array
-int searchRotated(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
+int searchRotated(int[] rotatedArray, int target) {
+    // "I'll use modified binary search for rotated sorted array"
+    int leftBound = 0, rightBound = rotatedArray.length - 1;
     
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) return mid;
+    while (leftBound <= rightBound) {
+        int midPoint = leftBound + (rightBound - leftBound) / 2;
         
-        if (nums[left] <= nums[mid]) { // Left half is sorted
-            if (target >= nums[left] && target < nums[mid]) right = mid - 1;
-            else left = mid + 1;
-        } else { // Right half is sorted
-            if (target > nums[mid] && target <= nums[right]) left = mid + 1;
-            else right = mid - 1;
+        if (rotatedArray[midPoint] == target) {
+            return midPoint; // "Found target at middle!"
+        }
+        
+        // "Determine which half is properly sorted"
+        if (rotatedArray[leftBound] <= rotatedArray[midPoint]) {
+            // "Left half is sorted normally"
+            if (target >= rotatedArray[leftBound] && target < rotatedArray[midPoint]) {
+                rightBound = midPoint - 1; // "Target is in left sorted half"
+            } else {
+                leftBound = midPoint + 1; // "Target must be in right half"
+            }
+        } else {
+            // "Right half is sorted normally"
+            if (target > rotatedArray[midPoint] && target <= rotatedArray[rightBound]) {
+                leftBound = midPoint + 1; // "Target is in right sorted half"
+            } else {
+                rightBound = midPoint - 1; // "Target must be in left half"
+            }
         }
     }
-    return -1;
+    return -1; // "Target not found in rotated array"
 }
 
 // 4. DFS (Matrix/Graph)
@@ -282,164 +295,238 @@ void dfsMarkIsland(char[][] grid, int row, int col) {
 
 // Time: O(m*n), Space: O(m*n) for recursion stack
 // Variant B: Flood fill
-int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
-    int originalColor = image[sr][sc];
+int[][] floodFill(int[][] image, int startRow, int startCol, int newColor) {
+    // "I'll use DFS to fill connected pixels of same color"
+    int originalColor = image[startRow][startCol];
+    
     if (originalColor != newColor) {
-        dfsFloodFill(image, sr, sc, originalColor, newColor);
+        // "Only fill if colors are different to avoid infinite loop"
+        dfsFloodFill(image, startRow, startCol, originalColor, newColor);
     }
     return image;
 }
+
 void dfsFloodFill(int[][] image, int row, int col, int originalColor, int newColor) {
+    // "Check boundaries and if pixel has different color"
     if (row < 0 || row >= image.length || col < 0 || col >= image[0].length || 
-        image[row][col] != originalColor) return;
-    
-    image[row][col] = newColor;
-    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-    for (int[] dir : dirs) {
-        dfsFloodFill(image, row + dir[0], col + dir[1], originalColor, newColor);
+        image[row][col] != originalColor) {
+        return;
     }
+    
+    image[row][col] = newColor; // "Fill current pixel with new color"
+    
+    // "Recursively fill all 4 connected neighbors"
+    dfsFloodFill(image, row + 1, col, originalColor, newColor); // Down
+    dfsFloodFill(image, row - 1, col, originalColor, newColor); // Up
+    dfsFloodFill(image, row, col + 1, originalColor, newColor); // Right
+    dfsFloodFill(image, row, col - 1, originalColor, newColor); // Left
 }
 
 // 5. BFS (Shortest Path)
 // Time: O(m*n), Space: O(m*n) for queue and visited array
-int shortestPath(int[][] grid, int[] start, int[] end) {
-    Queue<int[]> queue = new LinkedList<>();
-    boolean[][] visited = new boolean[grid.length][grid[0].length];
+int shortestPath(int[][] grid, int[] startPoint, int[] endPoint) {
+    // "I'll use BFS since it guarantees shortest path in unweighted graph"
+    Queue<int[]> explorationQueue = new LinkedList<>();
+    boolean[][] visitedCells = new boolean[grid.length][grid[0].length];
     
-    queue.offer(new int[]{start[0], start[1], 0}); // row, col, distance
-    visited[start[0]][start[1]] = true;
+    // "Start BFS from source: [row, col, distance]"
+    explorationQueue.offer(new int[]{startPoint[0], startPoint[1], 0});
+    visitedCells[startPoint[0]][startPoint[1]] = true;
     
-    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-    while (!queue.isEmpty()) {
-        int[] curr = queue.poll();
-        int row = curr[0], col = curr[1], dist = curr[2];
+    // "Define 4 directions: right, left, down, up"
+    int[][] directions = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    
+    while (!explorationQueue.isEmpty()) {
+        int[] currentCell = explorationQueue.poll();
+        int currentRow = currentCell[0], currentCol = currentCell[1], currentDistance = currentCell[2];
         
-        if (row == end[0] && col == end[1]) return dist;
+        // "Check if we reached the destination"
+        if (currentRow == endPoint[0] && currentCol == endPoint[1]) {
+            return currentDistance; // "Found shortest path!"
+        }
         
-        for (int[] dir : dirs) {
-            int newRow = row + dir[0], newCol = col + dir[1];
-            if (newRow >= 0 && newRow < grid.length && newCol >= 0 && newCol < grid[0].length &&
-                !visited[newRow][newCol] && grid[newRow][newCol] == 1) {
-                queue.offer(new int[]{newRow, newCol, dist + 1});
-                visited[newRow][newCol] = true;
+        // "Explore all 4 neighbors"
+        for (int[] direction : directions) {
+            int neighborRow = currentRow + direction[0];
+            int neighborCol = currentCol + direction[1];
+            
+            // "Check if neighbor is valid: in bounds, not visited, and walkable"
+            if (neighborRow >= 0 && neighborRow < grid.length && 
+                neighborCol >= 0 && neighborCol < grid[0].length &&
+                !visitedCells[neighborRow][neighborCol] && grid[neighborRow][neighborCol] == 1) {
+                
+                explorationQueue.offer(new int[]{neighborRow, neighborCol, currentDistance + 1});
+                visitedCells[neighborRow][neighborCol] = true; // "Mark as visited"
             }
         }
     }
-    return -1;
+    return -1; // "No path found"
 }
 
 // 6. BACKTRACKING
 // Time: O(n! * n), Space: O(n) for recursion stack
 // Variant A: Permutations (No reuse)
-void permute(int[] nums, List<Integer> path, boolean[] used, List<List<Integer>> result) {
-    if (path.size() == nums.length) {
-        result.add(new ArrayList<>(path));
+void permute(int[] nums, List<Integer> currentPath, boolean[] usedElements, List<List<Integer>> allPermutations) {
+    // "Base case: if path length equals array length, we have a complete permutation"
+    if (currentPath.size() == nums.length) {
+        allPermutations.add(new ArrayList<>(currentPath)); // "Add copy to results"
         return;
     }
     
+    // "Try each unused element at current position"
     for (int i = 0; i < nums.length; i++) {
-        if (used[i]) continue;
+        if (usedElements[i]) continue; // "Skip if already used"
         
-        path.add(nums[i]);      // Choose
-        used[i] = true;
-        permute(nums, path, used, result);  // Recurse
-        path.remove(path.size() - 1);       // Unchoose
-        used[i] = false;
+        // "CHOOSE: Add element to path"
+        currentPath.add(nums[i]);
+        usedElements[i] = true;
+        
+        // "RECURSE: Generate permutations with this choice"
+        permute(nums, currentPath, usedElements, allPermutations);
+        
+        // "UNCHOOSE: Backtrack by removing element"
+        currentPath.remove(currentPath.size() - 1);
+        usedElements[i] = false;
     }
 }
 
 // Time: O(C(n,k) * k), Space: O(k) for recursion stack
 // Variant B: Combinations (No reuse)
-void combine(int n, int k, int start, List<Integer> path, List<List<Integer>> result) {
-    if (path.size() == k) {
-        result.add(new ArrayList<>(path));
+void combine(int n, int k, int startIndex, List<Integer> currentCombination, List<List<Integer>> allCombinations) {
+    // "Base case: if we have k elements, we have a complete combination"
+    if (currentCombination.size() == k) {
+        allCombinations.add(new ArrayList<>(currentCombination));
         return;
     }
     
-    for (int i = start; i <= n; i++) {
-        path.add(i);
-        combine(n, k, i + 1, path, result); // i+1 = no reuse
-        path.remove(path.size() - 1);
+    // "Try each number from startIndex to n"
+    for (int currentNumber = startIndex; currentNumber <= n; currentNumber++) {
+        // "CHOOSE: Add current number"
+        currentCombination.add(currentNumber);
+        
+        // "RECURSE: Generate combinations starting from next number (no reuse)"
+        combine(n, k, currentNumber + 1, currentCombination, allCombinations);
+        
+        // "UNCHOOSE: Remove current number for backtracking"
+        currentCombination.remove(currentCombination.size() - 1);
     }
 }
 
 // Time: O(2^n * n), Space: O(n) for recursion stack
 // Variant C: Subsets (No reuse)
-void subsets(int[] nums, int start, List<Integer> path, List<List<Integer>> result) {
-    result.add(new ArrayList<>(path)); // Add current subset
+void subsets(int[] nums, int startIndex, List<Integer> currentSubset, List<List<Integer>> allSubsets) {
+    // "Add current subset to results (including empty subset)"
+    allSubsets.add(new ArrayList<>(currentSubset));
     
-    for (int i = start; i < nums.length; i++) {
-        path.add(nums[i]);
-        subsets(nums, i + 1, path, result); // i+1 = no reuse
-        path.remove(path.size() - 1);
+    // "Try adding each remaining element"
+    for (int i = startIndex; i < nums.length; i++) {
+        // "CHOOSE: Include current element"
+        currentSubset.add(nums[i]);
+        
+        // "RECURSE: Generate subsets starting from next index (no reuse)"
+        subsets(nums, i + 1, currentSubset, allSubsets);
+        
+        // "UNCHOOSE: Remove current element for backtracking"
+        currentSubset.remove(currentSubset.size() - 1);
     }
 }
 
 // Time: O(2^target), Space: O(target) for recursion stack
 // Variant D: Combination Sum (WITH reuse)
-void combinationSum(int[] candidates, int target, int start, List<Integer> path, List<List<Integer>> result) {
-    if (target == 0) {
-        result.add(new ArrayList<>(path));
+void combinationSum(int[] candidates, int remainingTarget, int startIndex, List<Integer> currentCombination, List<List<Integer>> validCombinations) {
+    // "Base case: found valid combination"
+    if (remainingTarget == 0) {
+        validCombinations.add(new ArrayList<>(currentCombination));
         return;
     }
-    if (target < 0) return;
+    // "Pruning: if target becomes negative, no valid solution"
+    if (remainingTarget < 0) return;
     
-    for (int i = start; i < candidates.length; i++) {
-        path.add(candidates[i]);
-        combinationSum(candidates, target - candidates[i], i, path, result); // i = allow reuse
-        path.remove(path.size() - 1);
+    // "Try each candidate starting from startIndex"
+    for (int i = startIndex; i < candidates.length; i++) {
+        // "CHOOSE: Add current candidate"
+        currentCombination.add(candidates[i]);
+        
+        // "RECURSE: Same index allows reuse of current element"
+        combinationSum(candidates, remainingTarget - candidates[i], i, currentCombination, validCombinations);
+        
+        // "UNCHOOSE: Remove for backtracking"
+        currentCombination.remove(currentCombination.size() - 1);
     }
 }
 
 // Time: O(4^n), Space: O(n) for recursion stack
 // Variant E: Generate Parentheses
-void generateParenthesis(int n, int open, int close, String path, List<String> result) {
-    if (path.length() == 2 * n) {
-        result.add(path);
+void generateParenthesis(int totalPairs, int openCount, int closeCount, String currentString, List<String> validParentheses) {
+    // "Base case: generated string of length 2n"
+    if (currentString.length() == 2 * totalPairs) {
+        validParentheses.add(currentString); // "Valid parentheses combination"
         return;
     }
     
-    if (open < n) {
-        generateParenthesis(n, open + 1, close, path + "(", result);
+    // "Add opening parenthesis if we haven't used all n"
+    if (openCount < totalPairs) {
+        generateParenthesis(totalPairs, openCount + 1, closeCount, currentString + "(", validParentheses);
     }
-    if (close < open) {
-        generateParenthesis(n, open, close + 1, path + ")", result);
+    
+    // "Add closing parenthesis if it won't make string invalid"
+    if (closeCount < openCount) {
+        generateParenthesis(totalPairs, openCount, closeCount + 1, currentString + ")", validParentheses);
     }
 }
 
 // Time: O(4^(m*n)), Space: O(m*n) for recursion stack
 // Variant F: Word Search (Matrix backtracking)
-boolean exist(char[][] board, String word) {
-    for (int i = 0; i < board.length; i++) {
-        for (int j = 0; j < board[0].length; j++) {
-            if (dfsWordSearch(board, word, i, j, 0)) return true;
+boolean exist(char[][] board, String targetWord) {
+    // "Try starting the search from each cell in the matrix"
+    for (int startRow = 0; startRow < board.length; startRow++) {
+        for (int startCol = 0; startCol < board[0].length; startCol++) {
+            if (dfsWordSearch(board, targetWord, startRow, startCol, 0)) {
+                return true; // "Found the word starting from this position"
+            }
         }
     }
-    return false;
-}
-boolean dfsWordSearch(char[][] board, String word, int row, int col, int index) {
-    if (index == word.length()) return true; // Found complete word
-    if (row < 0 || row >= board.length || col < 0 || col >= board[0].length || 
-        board[row][col] != word.charAt(index)) return false;
-    
-    char temp = board[row][col];
-    board[row][col] = '#'; // CHOOSE: Mark as visited
-    
-    // RECURSE: Try all 4 directions
-    boolean found = dfsWordSearch(board, word, row + 1, col, index + 1) ||
-                   dfsWordSearch(board, word, row - 1, col, index + 1) ||
-                   dfsWordSearch(board, word, row, col + 1, index + 1) ||
-                   dfsWordSearch(board, word, row, col - 1, index + 1);
-    
-    board[row][col] = temp; // UNCHOOSE: Backtrack
-    return found;
+    return false; // "Word not found in matrix"
 }
 
-// EXAMPLE CALLER
+boolean dfsWordSearch(char[][] board, String word, int currentRow, int currentCol, int charIndex) {
+    // "Base case: matched entire word"
+    if (charIndex == word.length()) return true;
+    
+    // "Check boundaries and character match"
+    if (currentRow < 0 || currentRow >= board.length || currentCol < 0 || currentCol >= board[0].length || 
+        board[currentRow][currentCol] != word.charAt(charIndex)) {
+        return false;
+    }
+    
+    // "CHOOSE: Mark current cell as visited"
+    char originalChar = board[currentRow][currentCol];
+    board[currentRow][currentCol] = '#';
+    
+    // "RECURSE: Try all 4 directions for next character"
+    boolean wordFound = dfsWordSearch(board, word, currentRow + 1, currentCol, charIndex + 1) || // Down
+                       dfsWordSearch(board, word, currentRow - 1, currentCol, charIndex + 1) || // Up
+                       dfsWordSearch(board, word, currentRow, currentCol + 1, charIndex + 1) || // Right
+                       dfsWordSearch(board, word, currentRow, currentCol - 1, charIndex + 1);   // Left
+    
+    // "UNCHOOSE: Restore original character for backtracking"
+    board[currentRow][currentCol] = originalChar;
+    
+    return wordFound;
+}
+
+// EXAMPLE CALLER - Shows how to use the word search function
 boolean wordSearchExample() {
-    char[][] board = {{'A','B','C','E'}, {'S','F','C','S'}, {'A','D','E','E'}};
-    String word = "ABCCED";
-    return exist(board, word);
+    // "Example: search for 'ABCCED' in this 3x4 matrix"
+    char[][] sampleBoard = {
+        {'A','B','C','E'}, 
+        {'S','F','C','S'}, 
+        {'A','D','E','E'}
+    };
+    String targetWord = "ABCCED";
+    
+    // "This should return true as the word exists: A(0,0)->B(0,1)->C(0,2)->C(1,2)->E(2,2)->D(2,1)"
+    return exist(sampleBoard, targetWord);
 }
 
 */
@@ -456,19 +543,39 @@ FLOW EXAMPLE for "ABCCED":
 
 // Time: O(n!), Space: O(n) for recursion stack
 // Variant G: N-Queens
-void solveNQueens(int n, int row, int[] queens, List<List<String>> result) {
-    if (row == n) {
-        result.add(buildBoard(queens, n));
+void solveNQueens(int boardSize, int currentRow, int[] queenPositions, List<List<String>> allSolutions) {
+    // "Base case: placed all queens successfully"
+    if (currentRow == boardSize) {
+        allSolutions.add(buildBoard(queenPositions, boardSize));
         return;
     }
     
-    for (int col = 0; col < n; col++) {
-        if (isValidQueen(queens, row, col)) {
-            queens[row] = col;  // Choose
-            solveNQueens(n, row + 1, queens, result);  // Recurse
-            // No need to unchoose, will be overwritten
+    // "Try placing queen in each column of current row"
+    for (int col = 0; col < boardSize; col++) {
+        if (isValidQueenPlacement(queenPositions, currentRow, col)) {
+            // "CHOOSE: Place queen at this position"
+            queenPositions[currentRow] = col;
+            
+            // "RECURSE: Try to place queens in remaining rows"
+            solveNQueens(boardSize, currentRow + 1, queenPositions, allSolutions);
+            
+            // "UNCHOOSE: Not needed here as position will be overwritten"
         }
     }
+}
+
+boolean isValidQueenPlacement(int[] queenPositions, int currentRow, int currentCol) {
+    // "Check if placing queen at (currentRow, currentCol) conflicts with previous queens"
+    for (int previousRow = 0; previousRow < currentRow; previousRow++) {
+        int previousCol = queenPositions[previousRow];
+        
+        // "Check same column or diagonal attack"
+        if (previousCol == currentCol || 
+            Math.abs(previousCol - currentCol) == Math.abs(previousRow - currentRow)) {
+            return false; // "Conflict found"
+        }
+    }
+    return true; // "Safe to place queen here"
 }
 boolean isValidQueen(int[] queens, int row, int col) {
     for (int i = 0; i < row; i++) {
@@ -478,16 +585,24 @@ boolean isValidQueen(int[] queens, int row, int col) {
     }
     return true;
 }
-List<String> buildBoard(int[] queens, int n) {
-    List<String> board = new ArrayList<>();
-    for (int i = 0; i < n; i++) {
-        StringBuilder sb = new StringBuilder();
-        for (int j = 0; j < n; j++) {
-            sb.append(queens[i] == j ? 'Q' : '.');
+List<String> buildBoard(int[] queenPositions, int boardSize) {
+    // "Convert queen positions array to visual board representation"
+    List<String> boardVisualization = new ArrayList<>();
+    
+    for (int row = 0; row < boardSize; row++) {
+        StringBuilder rowString = new StringBuilder();
+        for (int col = 0; col < boardSize; col++) {
+            // "Place 'Q' where queen is positioned, '.' elsewhere"
+            if (queenPositions[row] == col) {
+                rowString.append('Q'); // "Queen position"
+            } else {
+                rowString.append('.'); // "Empty cell"
+            }
         }
-        board.add(sb.toString());
+        boardVisualization.add(rowString.toString());
     }
-    return board;
+    
+    return boardVisualization;
 }
 
 // 7. DYNAMIC PROGRAMMING
@@ -511,35 +626,53 @@ int climbStairs(int n) {
 
 // Time: O(amount * coins), Space: O(amount)
 // Variant B: Coin change
-int coinChange(int[] coins, int amount) {
-    int[] dp = new int[amount + 1];
-    Arrays.fill(dp, amount + 1);
-    dp[0] = 0;
+int coinChange(int[] availableCoins, int targetAmount) {
+    // "I'll use DP array where dp[i] = minimum coins needed for amount i"
+    int[] minCoinsNeeded = new int[targetAmount + 1];
+    Arrays.fill(minCoinsNeeded, targetAmount + 1); // "Initialize with impossible value"
+    minCoinsNeeded[0] = 0; // "Base case: 0 coins needed for amount 0"
     
-    for (int i = 1; i <= amount; i++) {
-        for (int coin : coins) {
-            if (coin <= i) {
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+    // "For each amount from 1 to target"
+    for (int currentAmount = 1; currentAmount <= targetAmount; currentAmount++) {
+        // "Try each coin denomination"
+        for (int coinValue : availableCoins) {
+            if (coinValue <= currentAmount) {
+                // "Update minimum: either current value or using this coin + remaining amount"
+                minCoinsNeeded[currentAmount] = Math.min(minCoinsNeeded[currentAmount], 
+                                                        minCoinsNeeded[currentAmount - coinValue] + 1);
             }
         }
     }
-    return dp[amount] > amount ? -1 : dp[amount];
+    
+    // "Return result: -1 if impossible, otherwise minimum coins needed"
+    return minCoinsNeeded[targetAmount] > targetAmount ? -1 : minCoinsNeeded[targetAmount];
 }
 
 // Time: O(m*n), Space: O(m*n)
 // Variant C: 2D DP - Unique paths
-int uniquePaths(int m, int n) {
-    int[][] dp = new int[m][n];
+int uniquePaths(int rows, int cols) {
+    // "I'll use 2D DP where dp[i][j] = number of ways to reach cell (i,j)"
+    int[][] pathsToCell = new int[rows][cols];
     
-    for (int i = 0; i < m; i++) dp[i][0] = 1;
-    for (int j = 0; j < n; j++) dp[0][j] = 1;
+    // "Initialize first row: only one way to reach any cell in first row"
+    for (int col = 0; col < cols; col++) {
+        pathsToCell[0][col] = 1;
+    }
     
-    for (int i = 1; i < m; i++) {
-        for (int j = 1; j < n; j++) {
-            dp[i][j] = dp[i-1][j] + dp[i][j-1];
+    // "Initialize first column: only one way to reach any cell in first column"
+    for (int row = 0; row < rows; row++) {
+        pathsToCell[row][0] = 1;
+    }
+    
+    // "Fill the DP table: paths to current cell = paths from top + paths from left"
+    for (int row = 1; row < rows; row++) {
+        for (int col = 1; col < cols; col++) {
+            pathsToCell[row][col] = pathsToCell[row-1][col] + pathsToCell[row][col-1];
         }
     }
-    return dp[m-1][n-1];
+    
+    // "Return paths to bottom-right corner"
+    return pathsToCell[rows-1][cols-1];
 }
 
 // ========== ADDITIONAL CORE PATTERNS ==========
@@ -566,106 +699,139 @@ int maxProfit(int[] prices) {
 // Time: O(n), Space: O(1)
 // Variant B: Multiple transactions (buy/sell multiple times)
 int maxProfitMultiple(int[] prices) {
-    int profit = 0;
-    for (int i = 1; i < prices.length; i++) {
-        if (prices[i] > prices[i-1]) {
-            profit += prices[i] - prices[i-1];
+    // "I'll use greedy approach: buy before every price increase, sell before every decrease"
+    int totalProfit = 0;
+    
+    for (int day = 1; day < prices.length; day++) {
+        // "If price increased from yesterday, capture that profit"
+        if (prices[day] > prices[day-1]) {
+            totalProfit += prices[day] - prices[day-1]; // "Add the daily profit"
         }
+        // "If price decreased or stayed same, do nothing (don't trade)"
     }
-    return profit;
+    
+    return totalProfit; // "Return total profit from all profitable trades"
 }
 
 // 9. GROUP ANAGRAMS
 // Time: O(n * k log k), Space: O(n * k) where k is max string length
-List<List<String>> groupAnagrams(String[] strs) {
-    Map<String, List<String>> map = new HashMap<>();
+List<List<String>> groupAnagrams(String[] inputStrings) {
+    // "I'll use HashMap where key is sorted string and value is list of anagrams"
+    Map<String, List<String>> anagramGroups = new HashMap<>();
     
-    for (String str : strs) {
-        char[] chars = str.toCharArray();
-        Arrays.sort(chars);
-        String key = new String(chars);
+    for (String currentString : inputStrings) {
+        // "Create key by sorting characters of current string"
+        char[] characters = currentString.toCharArray();
+        Arrays.sort(characters);
+        String sortedKey = new String(characters);
         
-        map.putIfAbsent(key, new ArrayList<>());
-        map.get(key).add(str);
+        // "Add current string to its anagram group"
+        anagramGroups.putIfAbsent(sortedKey, new ArrayList<>());
+        anagramGroups.get(sortedKey).add(currentString);
     }
     
-    return new ArrayList<>(map.values());
+    // "Return all anagram groups as list of lists"
+    return new ArrayList<>(anagramGroups.values());
 }
 
 // Time: O(n * k), Space: O(n * k) - Alternative using character count
-List<List<String>> groupAnagramsCount(String[] strs) {
-    Map<String, List<String>> map = new HashMap<>();
+List<List<String>> groupAnagramsCount(String[] inputStrings) {
+    // "Alternative approach: use character frequency as key instead of sorting"
+    Map<String, List<String>> anagramGroups = new HashMap<>();
     
-    for (String str : strs) {
-        String key = getCharCount(str);
-        map.putIfAbsent(key, new ArrayList<>());
-        map.get(key).add(str);
+    for (String currentString : inputStrings) {
+        String frequencyKey = getCharacterFrequency(currentString);
+        anagramGroups.putIfAbsent(frequencyKey, new ArrayList<>());
+        anagramGroups.get(frequencyKey).add(currentString);
     }
     
-    return new ArrayList<>(map.values());
+    return new ArrayList<>(anagramGroups.values());
 }
 
-String getCharCount(String str) {
-    int[] count = new int[26];
+String getCharacterFrequency(String str) {
+    // "Count frequency of each character (a-z)"
+    int[] charCount = new int[26];
     for (char c : str.toCharArray()) {
-        count[c - 'a']++;
+        charCount[c - 'a']++; // "Increment count for this character"
     }
-    StringBuilder sb = new StringBuilder();
+    
+    // "Build unique key from character frequencies"
+    StringBuilder frequencyKey = new StringBuilder();
     for (int i = 0; i < 26; i++) {
-        sb.append('#').append(count[i]);
+        frequencyKey.append('#').append(charCount[i]); // "Format: #count for each letter"
     }
-    return sb.toString();
+    return frequencyKey.toString();
 }
 
 // ========== SENIOR LEVEL PATTERNS ==========
 
 // 10. MEDIAN OF TWO SORTED ARRAYS (Hard - Heap Approach)
 // Time: O((m+n) log(m+n)), Space: O(m+n)
-double findMedianSortedArrays(int[] nums1, int[] nums2) {
-    PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
-    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+double findMedianSortedArrays(int[] firstArray, int[] secondArray) {
+    // "I'll use two heaps: maxHeap for smaller half, minHeap for larger half"
+    PriorityQueue<Integer> maxHeapForSmallerHalf = new PriorityQueue<>((a, b) -> b - a);
+    PriorityQueue<Integer> minHeapForLargerHalf = new PriorityQueue<>();
     
-    for (int num : nums1) addNumber(num, maxHeap, minHeap);
-    for (int num : nums2) addNumber(num, maxHeap, minHeap);
+    // "Add all numbers from both arrays while maintaining heap balance"
+    for (int num : firstArray) {
+        addNumberToHeaps(num, maxHeapForSmallerHalf, minHeapForLargerHalf);
+    }
+    for (int num : secondArray) {
+        addNumberToHeaps(num, maxHeapForSmallerHalf, minHeapForLargerHalf);
+    }
     
-    if (maxHeap.size() == minHeap.size()) {
-        return (maxHeap.peek() + minHeap.peek()) / 2.0;
+    // "Calculate median based on heap sizes"
+    if (maxHeapForSmallerHalf.size() == minHeapForLargerHalf.size()) {
+        // "Even total count: median is average of two middle elements"
+        return (maxHeapForSmallerHalf.peek() + minHeapForLargerHalf.peek()) / 2.0;
     } else {
-        return maxHeap.peek();
+        // "Odd total count: median is the top of larger heap"
+        return maxHeapForSmallerHalf.peek();
     }
 }
-void addNumber(int num, PriorityQueue<Integer> maxHeap, PriorityQueue<Integer> minHeap) {
+
+void addNumberToHeaps(int num, PriorityQueue<Integer> maxHeap, PriorityQueue<Integer> minHeap) {
+    // "Always add to maxHeap first, then balance"
     maxHeap.offer(num);
-    minHeap.offer(maxHeap.poll());
+    minHeap.offer(maxHeap.poll()); // "Move largest from maxHeap to minHeap"
+    
+    // "Ensure maxHeap has equal or one more element than minHeap"
     if (maxHeap.size() < minHeap.size()) {
-        maxHeap.offer(minHeap.poll());
+        maxHeap.offer(minHeap.poll()); // "Move smallest from minHeap back to maxHeap"
     }
 }
 
 // 11. TRAPPING RAIN WATER (Hard)
 // Time: O(n), Space: O(1)
-int trap(int[] height) {
-    int left = 0, right = height.length - 1;
-    int leftMax = 0, rightMax = 0, water = 0;
+int trap(int[] elevationMap) {
+    // "I'll use two pointers approach with left and right max tracking"
+    int leftPointer = 0, rightPointer = elevationMap.length - 1;
+    int leftMaxHeight = 0, rightMaxHeight = 0, totalWaterTrapped = 0;
     
-    while (left < right) {
-        if (height[left] < height[right]) {
-            if (height[left] >= leftMax) {
-                leftMax = height[left];
+    while (leftPointer < rightPointer) {
+        // "Process the side with smaller height (water level limited by smaller side)"
+        if (elevationMap[leftPointer] < elevationMap[rightPointer]) {
+            // "Process left side"
+            if (elevationMap[leftPointer] >= leftMaxHeight) {
+                leftMaxHeight = elevationMap[leftPointer]; // "Update left max"
             } else {
-                water += leftMax - height[left];
+                // "Current height is lower than left max, so water can be trapped"
+                totalWaterTrapped += leftMaxHeight - elevationMap[leftPointer];
             }
-            left++;
+            leftPointer++; // "Move left pointer inward"
         } else {
-            if (height[right] >= rightMax) {
-                rightMax = height[right];
+            // "Process right side"
+            if (elevationMap[rightPointer] >= rightMaxHeight) {
+                rightMaxHeight = elevationMap[rightPointer]; // "Update right max"
             } else {
-                water += rightMax - height[right];
+                // "Current height is lower than right max, so water can be trapped"
+                totalWaterTrapped += rightMaxHeight - elevationMap[rightPointer];
             }
-            right--;
+            rightPointer--; // "Move right pointer inward"
         }
     }
-    return water;
+    
+    return totalWaterTrapped;
 }
 
 
