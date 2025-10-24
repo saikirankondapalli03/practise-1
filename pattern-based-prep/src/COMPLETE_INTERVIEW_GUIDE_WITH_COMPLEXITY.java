@@ -74,69 +74,99 @@ public class CompleteInterviewGuide {
 }
 
     
-    // 2. SLIDING WINDOW
-    // Time: O(n), Space: O(1)
-    // Variant A: Fixed size window
-    public static int maxSumSubarray(int[] arr, int k) {
-    int maxSum = 0, windowSum = 0;
-    for (int i = 0; i < k; i++) windowSum += arr[i];
-    maxSum = windowSum;
-    
-    for (int i = k; i < arr.length; i++) {
-        windowSum += arr[i] - arr[i-k];
-        maxSum = Math.max(maxSum, windowSum);
+// 2. SLIDING WINDOW
+// Time: O(n), Space: O(1)
+// Variant A: Fixed size window
+public static int maxSumSubarray(int[] arr, int windowSize) {
+    int maxSum = 0, currentWindowSum = 0;
+
+    // Calculate sum of first window
+    for (int i = 0; i < windowSize; i++) {
+        currentWindowSum += arr[i];
+    }
+    maxSum = currentWindowSum;
+
+    // Slide the window: remove leftmost, add rightmost
+    for (int windowEnd = windowSize; windowEnd < arr.length; windowEnd++) {
+        int windowStart = windowEnd - windowSize;
+        currentWindowSum += arr[windowEnd] - arr[windowStart];
+        maxSum = Math.max(maxSum, currentWindowSum);
     }
     return maxSum;
 }
 
-    
-    // Time: O(n), Space: O(min(m,n)) where m is charset size
-    // Variant B: Variable size window
-    public static int longestSubstringWithoutRepeating(String s) {
-    Set<Character> set = new HashSet<>();
-    int left = 0, maxLen = 0;
-    
-    for (int right = 0; right < s.length(); right++) {
-        while (set.contains(s.charAt(right))) {
-            set.remove(s.charAt(left++));
-        }
-        set.add(s.charAt(right));
-        maxLen = Math.max(maxLen, right - left + 1);
+ // Time: O(|s| + |t|), Space: O(|s| + |t|)
+// Variant C: Minimum window substring
+public static String findMinimumWindowSubstring(String sourceString, String targetString) {
+    // Step 1: Count what characters we need to find
+    Map<Character, Integer> charactersNeeded = new HashMap<>();
+    for (char ch : targetString.toCharArray()) {
+        charactersNeeded.put(ch, charactersNeeded.getOrDefault(ch, 0) + 1);
     }
-    return maxLen;
+
+    // Step 2: Initialize sliding window variables
+    int windowStart = 0, windowEnd = 0;
+    int satisfiedCharacterTypes = 0;  // How many char types have enough count
+    int totalCharacterTypesNeeded = charactersNeeded.size();
+
+    // Step 3: Track the best (minimum) window found so far
+    int bestWindowStart = 0, bestWindowLength = Integer.MAX_VALUE;
+
+    // Step 4: Count characters in current window
+    Map<Character, Integer> charactersInCurrentWindow = new HashMap<>();
+
+    // Step 5: Sliding window algorithm
+    while (windowEnd < sourceString.length()) {
+
+        // EXPAND: Add character from right side
+        char characterEnteringWindow = sourceString.charAt(windowEnd);
+        charactersInCurrentWindow.put(characterEnteringWindow,
+            charactersInCurrentWindow.getOrDefault(characterEnteringWindow, 0) + 1);
+
+        // Check if this character type now has enough count
+        if (charactersNeeded.containsKey(characterEnteringWindow) &&
+            charactersInCurrentWindow.get(characterEnteringWindow).equals(
+                charactersNeeded.get(characterEnteringWindow))) {
+            satisfiedCharacterTypes++;
+        }
+
+        windowEnd++;  // Move right boundary
+
+        // CONTRACT: Try to shrink window from left while it's still valid
+        while (satisfiedCharacterTypes == totalCharacterTypesNeeded) {
+
+            // Update best window if current is smaller
+            int currentWindowLength = windowEnd - windowStart;
+            if (currentWindowLength < bestWindowLength) {
+                bestWindowStart = windowStart;
+                bestWindowLength = currentWindowLength;
+            }
+
+            // Remove character from left side
+            char characterLeavingWindow = sourceString.charAt(windowStart);
+            charactersInCurrentWindow.put(characterLeavingWindow,
+                charactersInCurrentWindow.get(characterLeavingWindow) - 1);
+
+            // Check if removing this character breaks the requirement
+            if (charactersNeeded.containsKey(characterLeavingWindow) &&
+                charactersInCurrentWindow.get(characterLeavingWindow) <
+                charactersNeeded.get(characterLeavingWindow)) {
+                satisfiedCharacterTypes--;
+            }
+
+            windowStart++;  // Move left boundary
+        }
+    }
+
+    // Step 6: Return result
+    if (bestWindowLength == Integer.MAX_VALUE) {
+        return "";  // No valid window found
+    } else {
+        return sourceString.substring(bestWindowStart, bestWindowStart + bestWindowLength);
+    }
 }
 
-    
-    // Time: O(|s| + |t|), Space: O(|s| + |t|)
-    // Variant C: Minimum window substring
-    public static String minWindow(String s, String t) {
-    Map<Character, Integer> need = new HashMap<>();
-    for (char c : t.toCharArray()) need.put(c, need.getOrDefault(c, 0) + 1);
-    
-    int left = 0, right = 0, valid = 0, start = 0, len = Integer.MAX_VALUE;
-    Map<Character, Integer> window = new HashMap<>();
-    
-    while (right < s.length()) {
-        char c = s.charAt(right++);
-        if (need.containsKey(c)) {
-            window.put(c, window.getOrDefault(c, 0) + 1);
-            if (window.get(c).equals(need.get(c))) valid++;
-        }
-        
-        while (valid == need.size()) {
-            if (right - left < len) {
-                start = left;
-                len = right - left;
-            }
-            char d = s.charAt(left++);
-            if (need.containsKey(d)) {
-                if (window.get(d).equals(need.get(d))) valid--;
-                window.put(d, window.get(d) - 1);
-            }
-        }
-    }
-    return len == Integer.MAX_VALUE ? "" : s.substring(start, start + len);
-}
+
 
 // 3. BINARY SEARCH
 // Time: O(log n), Space: O(1)
@@ -469,9 +499,82 @@ int uniquePaths(int m, int n) {
     return dp[m-1][n-1];
 }
 
+// ========== ADDITIONAL CORE PATTERNS ==========
+
+// 8. BUY AND SELL STOCK
+// Time: O(n), Space: O(1)
+// Variant A: Single transaction (buy once, sell once)
+int maxProfit(int[] prices) {
+    int minPrice = Integer.MAX_VALUE;
+    int maxProfit = 0;
+    
+    for (int price : prices) {
+        if (price < minPrice) {
+            minPrice = price;
+        } else if (price - minPrice > maxProfit) {
+            maxProfit = price - minPrice;
+        }
+    }
+    return maxProfit;
+}
+
+// Time: O(n), Space: O(1)
+// Variant B: Multiple transactions (buy/sell multiple times)
+int maxProfitMultiple(int[] prices) {
+    int profit = 0;
+    for (int i = 1; i < prices.length; i++) {
+        if (prices[i] > prices[i-1]) {
+            profit += prices[i] - prices[i-1];
+        }
+    }
+    return profit;
+}
+
+// 9. GROUP ANAGRAMS
+// Time: O(n * k log k), Space: O(n * k) where k is max string length
+List<List<String>> groupAnagrams(String[] strs) {
+    Map<String, List<String>> map = new HashMap<>();
+    
+    for (String str : strs) {
+        char[] chars = str.toCharArray();
+        Arrays.sort(chars);
+        String key = new String(chars);
+        
+        map.putIfAbsent(key, new ArrayList<>());
+        map.get(key).add(str);
+    }
+    
+    return new ArrayList<>(map.values());
+}
+
+// Time: O(n * k), Space: O(n * k) - Alternative using character count
+List<List<String>> groupAnagramsCount(String[] strs) {
+    Map<String, List<String>> map = new HashMap<>();
+    
+    for (String str : strs) {
+        String key = getCharCount(str);
+        map.putIfAbsent(key, new ArrayList<>());
+        map.get(key).add(str);
+    }
+    
+    return new ArrayList<>(map.values());
+}
+
+String getCharCount(String str) {
+    int[] count = new int[26];
+    for (char c : str.toCharArray()) {
+        count[c - 'a']++;
+    }
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 26; i++) {
+        sb.append('#').append(count[i]);
+    }
+    return sb.toString();
+}
+
 // ========== SENIOR LEVEL PATTERNS ==========
 
-// 8. MEDIAN OF TWO SORTED ARRAYS (Hard - Heap Approach)
+// 10. MEDIAN OF TWO SORTED ARRAYS (Hard - Heap Approach)
 // Time: O((m+n) log(m+n)), Space: O(m+n)
 double findMedianSortedArrays(int[] nums1, int[] nums2) {
     PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
@@ -494,7 +597,7 @@ void addNumber(int num, PriorityQueue<Integer> maxHeap, PriorityQueue<Integer> m
     }
 }
 
-// 9. TRAPPING RAIN WATER (Hard)
+// 11. TRAPPING RAIN WATER (Hard)
 // Time: O(n), Space: O(1)
 int trap(int[] height) {
     int left = 0, right = height.length - 1;

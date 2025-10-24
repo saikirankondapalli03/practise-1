@@ -119,41 +119,79 @@ public class YahooCompleteGuide {
         }
         return maxLen;
     }
-    
-    /**
-     * 2C. Minimum Window Substring
-     * Time: O(|s| + |t|) - each character processed once
-     * Space: O(|s| + |t|) - HashMap storage for character frequencies
-     */
-    public static String minWindow(String s, String t) {
-        Map<Character, Integer> need = new HashMap<>();
-        for (char c : t.toCharArray()) need.put(c, need.getOrDefault(c, 0) + 1);
-        
-        int left = 0, right = 0, valid = 0, start = 0, len = Integer.MAX_VALUE;
-        Map<Character, Integer> window = new HashMap<>();
-        
-        while (right < s.length()) {
-            char c = s.charAt(right++);
-            if (need.containsKey(c)) {
-                window.put(c, window.getOrDefault(c, 0) + 1);
-                if (window.get(c).equals(need.get(c))) valid++;
+
+    // Time: O(|s| + |t|), Space: O(|s| + |t|)
+// Variant C: Minimum window substring
+    public static String findMinimumWindowSubstring(String sourceString, String targetString) {
+        // Step 1: Count what characters we need to find
+        Map<Character, Integer> charactersNeeded = new HashMap<>();
+        for (char ch : targetString.toCharArray()) {
+            charactersNeeded.put(ch, charactersNeeded.getOrDefault(ch, 0) + 1);
+        }
+
+        // Step 2: Initialize sliding window variables
+        int windowStart = 0, windowEnd = 0;
+        int satisfiedCharacterTypes = 0;  // How many char types have enough count
+        int totalCharacterTypesNeeded = charactersNeeded.size();
+
+        // Step 3: Track the best (minimum) window found so far
+        int bestWindowStart = 0, bestWindowLength = Integer.MAX_VALUE;
+
+        // Step 4: Count characters in current window
+        Map<Character, Integer> charactersInCurrentWindow = new HashMap<>();
+
+        // Step 5: Sliding window algorithm
+        while (windowEnd < sourceString.length()) {
+
+            // EXPAND: Add character from right side
+            char characterEnteringWindow = sourceString.charAt(windowEnd);
+            charactersInCurrentWindow.put(characterEnteringWindow,
+                    charactersInCurrentWindow.getOrDefault(characterEnteringWindow, 0) + 1);
+
+            // Check if this character type now has enough count
+            if (charactersNeeded.containsKey(characterEnteringWindow) &&
+                    charactersInCurrentWindow.get(characterEnteringWindow).equals(
+                            charactersNeeded.get(characterEnteringWindow))) {
+                satisfiedCharacterTypes++;
             }
-            
-            while (valid == need.size()) {
-                if (right - left < len) {
-                    start = left;
-                    len = right - left;
+
+            windowEnd++;  // Move right boundary
+
+            // CONTRACT: Try to shrink window from left while it's still valid
+            while (satisfiedCharacterTypes == totalCharacterTypesNeeded) {
+
+                // Update best window if current is smaller
+                int currentWindowLength = windowEnd - windowStart;
+                if (currentWindowLength < bestWindowLength) {
+                    bestWindowStart = windowStart;
+                    bestWindowLength = currentWindowLength;
                 }
-                char d = s.charAt(left++);
-                if (need.containsKey(d)) {
-                    if (window.get(d).equals(need.get(d))) valid--;
-                    window.put(d, window.get(d) - 1);
+
+                // Remove character from left side
+                char characterLeavingWindow = sourceString.charAt(windowStart);
+                charactersInCurrentWindow.put(characterLeavingWindow,
+                        charactersInCurrentWindow.get(characterLeavingWindow) - 1);
+
+                // Check if removing this character breaks the requirement
+                if (charactersNeeded.containsKey(characterLeavingWindow) &&
+                        charactersInCurrentWindow.get(characterLeavingWindow) <
+                                charactersNeeded.get(characterLeavingWindow)) {
+                    satisfiedCharacterTypes--;
                 }
+
+                windowStart++;  // Move left boundary
             }
         }
-        return len == Integer.MAX_VALUE ? "" : s.substring(start, start + len);
+
+        // Step 6: Return result
+        if (bestWindowLength == Integer.MAX_VALUE) {
+            return "";  // No valid window found
+        } else {
+            return sourceString.substring(bestWindowStart, bestWindowStart + bestWindowLength);
+        }
     }
-    
+
+
     // ========== 3. BINARY SEARCH ==========
     
     /**
