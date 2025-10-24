@@ -38,10 +38,15 @@ class CharacterReplacement {
 			// window as we
 			// are not allowed to replace more than 'k' letters
 			// if the length of string > (size of window + total replaceable characters)
-			if (windowEnd - windowStart + 1 >  mostFrequentCharacter +k) {
+			while (windowEnd - windowStart + 1 > mostFrequentCharacter + k) {
 				char leftChar = str.charAt(windowStart);
 				letterFrequencyMap.put(leftChar, letterFrequencyMap.get(leftChar) - 1);
+				if (letterFrequencyMap.get(leftChar) == 0) {
+					letterFrequencyMap.remove(leftChar);
+				}
 				windowStart++;
+				// Recalculate mostFrequentCharacter for current window
+				mostFrequentCharacter = letterFrequencyMap.isEmpty() ? 0 : Collections.max(letterFrequencyMap.values());
 			}
 
 			maxLength = Math.max(maxLength, windowEnd - windowStart + 1);
@@ -87,7 +92,7 @@ The idea is to keep the window as large as possible while ensuring that:
 This way, we're always maintaining a window that could potentially be turned into a valid substring (all same characters) by replacing at most k characters.
 	 */
 	public static void main(String[] args) {
-		//System.out.println(CharacterReplacement.findLength("abcddf", 2));
+		System.out.println(CharacterReplacement.findLength("abcddf", 2));
 		//System.out.println(CharacterReplacement.findLength("abbcb", 2));
 		System.out.println(CharacterReplacement.findLength("aaadde", 2));
 	}
