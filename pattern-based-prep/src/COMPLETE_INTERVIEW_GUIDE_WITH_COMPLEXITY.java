@@ -1,11 +1,24 @@
-// ========================================
-// COMPLETE CODING INTERVIEW CHEAT SHEET
-// ========================================
+/*
+package com.patterns.backtracking;
 
 import java.util.*;
 
-// Note: This is a reference guide, not a complete class
-// Add proper class structure and ListNode definition when using
+*/
+/**
+ * Complete Coding Interview Cheat Sheet
+ * All essential patterns with working implementations
+ *//*
+
+public class CompleteInterviewGuide {
+    
+    // ListNode definition for linked list problems
+    static class ListNode {
+        int val;
+        ListNode next;
+        ListNode() {}
+        ListNode(int val) { this.val = val; }
+        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+    }
 
 // 🔍 PROBLEM RECOGNITION:
 // Array pair/sum → Two Pointers
@@ -19,8 +32,12 @@ import java.util.*;
 
 // 1. TWO POINTERS
 // Time: O(n), Space: O(1)
-// Variant A: Two Sum (sorted array)
-int[] twoSum(int[] arr, int target) {
+    // ========== CORE PATTERNS WITH VARIANTS ==========
+    
+    // 1. TWO POINTERS
+    // Time: O(n), Space: O(1)
+    // Variant A: Two Sum (sorted array)
+    public static int[] twoSum(int[] arr, int target) {
     int left = 0, right = arr.length - 1;
     while (left < right) {
         int sum = arr[left] + arr[right];
@@ -31,9 +48,10 @@ int[] twoSum(int[] arr, int target) {
     return new int[]{-1, -1};
 }
 
-// Time: O(n), Space: O(1)
-// Variant B: Remove duplicates
-int removeDuplicates(int[] nums) {
+    
+    // Time: O(n), Space: O(1)
+    // Variant B: Remove duplicates
+    public static int removeDuplicates(int[] nums) {
     int slow = 0;
     for (int fast = 1; fast < nums.length; fast++) {
         if (nums[fast] != nums[slow]) {
@@ -43,9 +61,10 @@ int removeDuplicates(int[] nums) {
     return slow + 1;
 }
 
-// Time: O(n), Space: O(1)
-// Variant C: Palindrome check
-boolean isPalindrome(String s) {
+    
+    // Time: O(n), Space: O(1)
+    // Variant C: Palindrome check
+    public static boolean isPalindrome(String s) {
     int left = 0, right = s.length() - 1;
     while (left < right) {
         if (s.charAt(left) != s.charAt(right)) return false;
@@ -54,10 +73,11 @@ boolean isPalindrome(String s) {
     return true;
 }
 
-// 2. SLIDING WINDOW
-// Time: O(n), Space: O(1)
-// Variant A: Fixed size window
-int maxSumSubarray(int[] arr, int k) {
+    
+    // 2. SLIDING WINDOW
+    // Time: O(n), Space: O(1)
+    // Variant A: Fixed size window
+    public static int maxSumSubarray(int[] arr, int k) {
     int maxSum = 0, windowSum = 0;
     for (int i = 0; i < k; i++) windowSum += arr[i];
     maxSum = windowSum;
@@ -69,9 +89,10 @@ int maxSumSubarray(int[] arr, int k) {
     return maxSum;
 }
 
-// Time: O(n), Space: O(min(m,n)) where m is charset size
-// Variant B: Variable size window
-int longestSubstringWithoutRepeating(String s) {
+    
+    // Time: O(n), Space: O(min(m,n)) where m is charset size
+    // Variant B: Variable size window
+    public static int longestSubstringWithoutRepeating(String s) {
     Set<Character> set = new HashSet<>();
     int left = 0, maxLen = 0;
     
@@ -85,9 +106,10 @@ int longestSubstringWithoutRepeating(String s) {
     return maxLen;
 }
 
-// Time: O(|s| + |t|), Space: O(|s| + |t|)
-// Variant C: Minimum window substring
-String minWindow(String s, String t) {
+    
+    // Time: O(|s| + |t|), Space: O(|s| + |t|)
+    // Variant C: Minimum window substring
+    public static String minWindow(String s, String t) {
     Map<Character, Integer> need = new HashMap<>();
     for (char c : t.toCharArray()) need.put(c, need.getOrDefault(c, 0) + 1);
     
@@ -351,6 +373,7 @@ boolean wordSearchExample() {
     return exist(board, word);
 }
 
+*/
 /*
 FLOW EXAMPLE for "ABCCED":
 1. Try (0,0)='A' -> matches word[0]
@@ -359,7 +382,8 @@ FLOW EXAMPLE for "ABCCED":
 4. Find 'C' at (0,2), continue path...
 5. Complete: A->B->C->C->E->D found!
 6. Backtrack: restore all '#' to original chars
-*/
+*//*
+
 
 // Time: O(n!), Space: O(n) for recursion stack
 // Variant G: N-Queens
@@ -496,64 +520,10 @@ int trap(int[] height) {
     return water;
 }
 
-// 10. LRU CACHE (Design Pattern)
-// Time: O(1) for get/put, Space: O(capacity)
-class LRUCache {
-    class Node {
-        int key, val;
-        Node prev, next;
-        Node(int key, int val) { this.key = key; this.val = val; }
-    }
-    
-    private Map<Integer, Node> map = new HashMap<>();
-    private Node head = new Node(0, 0);
-    private Node tail = new Node(0, 0);
-    private int capacity;
-    
-    public LRUCache(int capacity) {
-        this.capacity = capacity;
-        head.next = tail;
-        tail.prev = head;
-    }
-    
-    public int get(int key) {
-        if (map.containsKey(key)) {
-            Node node = map.get(key);
-            remove(node);
-            insert(node);
-            return node.val;
-        }
-        return -1;
-    }
-    
-    public void put(int key, int value) {
-        if (map.containsKey(key)) {
-            remove(map.get(key));
-        }
-        if (map.size() == capacity) {
-            remove(tail.prev);
-        }
-        insert(new Node(key, value));
-    }
-    
-    private void remove(Node node) {
-        map.remove(node.key);
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
-    }
-    
-    private void insert(Node node) {
-        map.put(node.key, node);
-        node.next = head.next;
-        node.next.prev = node;
-        head.next = node;
-        node.prev = head;
-    }
-}
-
 
 // ========== INTERVIEW STRATEGY ==========
 
+*/
 /*
 STEP 1: CLARIFY (30 seconds)
 - "Can the array be empty?"
@@ -584,10 +554,12 @@ STEP 6: COMPLEXITY ANALYSIS (1 minute)
 
 STEP 7: OPTIMIZE (if time)
 - "I can reduce space from O(n) to O(1) by..."
-*/
+*//*
+
 
 // ========== WHAT TO SAY FOR EACH PROBLEM TYPE ==========
 
+*/
 /*
 🔍 WHEN YOU SEE... → SAY THIS:
 
@@ -619,10 +591,12 @@ OTHER:
 • "Detect cycle" → "I'll use fast/slow pointers - O(n) time, O(1) space"
 • "Merge intervals" → "I'll sort first - O(n log n) time, O(n) space"
 • "Top K elements" → "I'll use min-heap - O(n log k) time, O(k) space"
-*/
+*//*
+
 
 // ========== BACKTRACKING DECISION TREE ==========
 
+*/
 /*
 🎯 BACKTRACKING PATTERN RECOGNITION:
 
@@ -650,10 +624,12 @@ USE i+1 (NEXT INDEX = NO REUSE):
 • "I'll use the choose-recurse-unchoose pattern"
 • "Since elements can be reused, I'll pass the same index i"
 • "Since each element is used once, I'll pass i+1"
-*/
+*//*
+
 
 // ========== YAHOO INTERVIEW ESSENTIALS ==========
 
+*/
 /*
 🟣 YAHOO FOCUS AREAS:
 • String manipulation and parsing
@@ -674,10 +650,12 @@ USE i+1 (NEXT INDEX = NO REUSE):
 8. 3Sum - Two pointers O(n²)
 9. Search in Rotated Array - Binary search O(log n)
 10. Climbing Stairs - DP O(n)
-*/
+*//*
+
 
 // ========== TOP 50 MUST-KNOW QUESTIONS (FREQUENCY RANKED) ==========
 
+*/
 /*
 🔥 ULTRA HIGH FREQUENCY (Asked 80%+ of interviews)
 1. Two Sum - HashMap O(n)
@@ -738,10 +716,12 @@ USE i+1 (NEXT INDEX = NO REUSE):
 48. Alien Dictionary - Topological sort O(C)
 49. Critical Connections Network - Tarjan O(V+E)
 50. Sliding Window Maximum - Deque O(n)
-*/
+*//*
+
 
 // ========== FINAL REVISION FOR YAHOO (2:30pm CUTOFF) ==========
 
+*/
 /*
 🕰️ MEDITATION PREP CHECKLIST (2:30pm - 3:00pm):
 
@@ -779,10 +759,12 @@ USE i+1 (NEXT INDEX = NO REUSE):
 • Review the 8-step interview script
 • Trust your preparation - you know this!
 • Remember: Think out loud, start simple, optimize later
-*/
+*//*
+
 
 // ========== YAHOO INTERVIEW CONFIDENCE ==========
 
+*/
 /*
 ✅ You have mastered all core patterns
 ✅ You know the top 10 most frequent questions

@@ -238,7 +238,7 @@ Can same element be used multiple times?
 ## 📚 Resources
 
 ### Core Files
-- [`COMPLETE_INTERVIEW_GUIDE_WITH_COMPLEXITY.java`](./COMPLETE_INTERVIEW_GUIDE_WITH_COMPLEXITY.java) - Complete pattern reference
+- [`COMPLETE_INTERVIEW_GUIDE_WITH_COMPLEXITY.java`](pattern-based-prep/src/COMPLETE_INTERVIEW_GUIDE_WITH_COMPLEXITY.java) - Complete pattern reference
 - [`pattern-based-prep/`](./pattern-based-prep/) - Detailed implementations
 
 ### Pattern Examples
