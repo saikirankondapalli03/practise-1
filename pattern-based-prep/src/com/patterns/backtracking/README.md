@@ -1,12 +1,74 @@
 # Backtracking Patterns
 
-## 🎯 Pattern Description
-Problems that explore all possible solutions by making choices and undoing them. Use when you need to find all solutions or count possibilities.
+## 🎯 Core Concept
+Explore all possible solutions by making choices and undoing them. **Strategy:** Choose → Explore → Unchoose
 
-## 📝 Template Approach
-**Strategy:** Choose → Explore → Unchoose (backtrack)
-**Time Complexity:** O(b^d) where b=branching factor, d=depth
+**Time Complexity:** O(b^d) where b=branching factor, d=depth  
 **Space Complexity:** O(d) for recursion stack
+
+## 📝 Template Structure
+```java
+void backtrack(parameters) {
+    if (condition) {
+        result.add(new ArrayList<>(path));
+        return;
+    }
+    
+    for (choice in choices) {
+        if (valid choice) {
+            path.add(choice);           // CHOOSE
+            backtrack(modified_params); // EXPLORE
+            path.remove(path.size()-1); // UNCHOOSE
+        }
+    }
+}
+```
+
+## 🔄 Three Main Patterns
+
+| Pattern | Base Case | When to Add | Loop | Duplicate Prevention |
+|---------|-----------|-------------|------|---------------------|
+| **Permutations** | `size == n` | At base case | `0 to n-1` | `used[]` array |
+| **Combinations** | `size == k` | At base case | `start to n` | `start` index |
+| **Subsets** | None | Every call | `start to n-1` | `start` index |
+
+### Quick Templates
+
+**Permutations (order matters):**
+```java
+if (path.size() == nums.length) { result.add(new ArrayList<>(path)); return; }
+for (int i = 0; i < nums.length; i++) {
+    if (used[i]) continue;
+    path.add(nums[i]); used[i] = true;
+    backtrack(); 
+    path.remove(path.size()-1); used[i] = false;
+}
+```
+
+**Combinations (choose k from n):**
+```java
+if (path.size() == k) { result.add(new ArrayList<>(path)); return; }
+for (int i = start; i <= n; i++) {
+    path.add(i);
+    backtrack(i + 1); // i+1 prevents duplicates
+    path.remove(path.size()-1);
+}
+```
+
+**Subsets (all sizes):**
+```java
+result.add(new ArrayList<>(path)); // Add every time
+for (int i = start; i < nums.length; i++) {
+    path.add(nums[i]);
+    backtrack(i + 1);
+    path.remove(path.size()-1);
+}
+```
+
+## 🎪 Interview Recognition
+- **"All arrangements"** → Permutations (`used[]`)
+- **"Choose k from n"** → Combinations (`start` index)
+- **"All subsets"** → Subsets (add every call)
 
 ## 📚 Problems by Pattern
 
@@ -88,31 +150,5 @@ Problems that explore all possible solutions by making choices and undoing them.
 **Description:** Word search in grid
 **Key Concept:** DFS with visited tracking
 
-## 🚀 Learning Order
-**Start with Easy:**
-1. FindAllTreePaths.java
-
-**Then Medium:**
-1. AllBrackets.java
-2. SubsetSum.java
-3. CountAllPathSum.java
-4. PhoneNumber.java
-5. AllBackTracks.java
-6. SubsetSumBackTrack.java
-
-**Finally Hard:**
-1. NQueens.java
-2. Boggle.java
-3. NQueens2.java
-4. NQueensGeeksForGeeks.java
-
-## 💡 Key Insights
-- Read template files (`backtracking-basic.txt`, `backtracking-aggregation.txt`) first
-- Master the choose-explore-unchoose pattern
-- Focus on base cases and pruning conditions
-- Practice visualizing the recursion tree
-
-## 🔗 Related Patterns
-- Dynamic Programming (for optimization)
-- DFS/BFS (for graph traversal)
-- Tree traversal patterns
+## 🚀 Learning Path
+**Easy:** FindAllTreePaths → **Medium:** AllBrackets, SubsetSum, PhoneNumber → **Hard:** NQueens, Boggle

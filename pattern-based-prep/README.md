@@ -138,10 +138,10 @@ cd 02-two-pointers-detailed/pattern1-opposite-direction-pairs/
 ```bash
 # Each pattern has detailed README with problem descriptions
 cd 01-sliding-window-detailed/pattern1-fixed-size/
-cat README.md  # Complete pattern guide + all problems
+cat How-to-talk-in-interview.md  # Complete pattern guide + all problems
 
 cd ../../02-two-pointers-detailed/pattern1-opposite-direction-pairs/
-cat README.md  # Complete pattern guide + all problems
+cat How-to-talk-in-interview.md  # Complete pattern guide + all problems
 
 # Start with any pattern - each is self-contained!
 ```
