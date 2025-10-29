@@ -325,6 +325,332 @@ KTable<String, UserAggregate> currentState = builder
     .aggregate(
         UserAggregate::new,
         (key, event, aggregate) -> aggregate.apply(event),
+        Materialized.as("user-state")
+    );
+
+// Periodic snapshots
+currentState.toStream()
+    .filter((k, v) -> v.getVersion() % 100 == 0) // Every 100 events
+    .to("user-snapshots");
+```
+
+## Situational Questions
+
+### Q17: Your Kafka cluster is down. How do you handle it?
+**Immediate Actions:**
+1. Check broker health and logs
+2. Verify ZooKeeper/KRaft status
+3. Enable circuit breakers in applications
+4. Switch to backup cluster if available
+
+**Application Resilience:**
+```java
+// Producer with retry and fallback
+public void sendWithFallback(ProducerRecord record) {
+    try {
+        producer.send(record).get(5, TimeUnit.SECONDS);
+    } catch (Exception e) {
+        // Store in local queue for retry
+        fallbackQueue.offer(record);
+        scheduleRetry();
+    }
+}
+```
+
+### Q18: A consumer is processing the same message repeatedly
+**Root Causes:**
+- Processing failure without offset commit
+- Infinite retry loop
+- Poison message
+
+**Solution:**
+```java
+int retryCount = 0;
+while (retryCount < MAX_RETRIES) {
+    try {
+        processMessage(record);
+        consumer.commitSync();
+        break;
+    } catch (Exception e) {
+        retryCount++;
+        if (retryCount >= MAX_RETRIES) {
+            // Send to DLQ
+            dlqProducer.send(new ProducerRecord<>("dlq-topic", record));
+            consumer.commitSync(); // Commit to skip poison message
+        }
+    }
+}
+```
+
+### Q19: You need to migrate 1TB of data from old to new Kafka cluster
+**Migration Strategy:**
+1. **Dual Write Phase:**
+```java
+// Write to both clusters
+producer1.send(record); // Old cluster
+producer2.send(record); // New cluster
+```
+
+2. **Consumer Migration:**
+```java
+// Gradually move consumers
+// Start: 100% old cluster
+// Middle: 50% old, 50% new
+// End: 100% new cluster
+```
+
+3. **Data Backfill:**
+```bash
+# Use MirrorMaker 2.0
+connect-mirror-maker mm2.properties
+```
+
+### Q20: Your stream processing app has a memory leak
+**Investigation:**
+1. Monitor JVM heap usage
+2. Check state store sizes
+3. Analyze GC logs
+4. Profile with tools like JProfiler
+
+**Solutions:**
+```java
+// Reduce cache size
+props.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 10 * 1024 * 1024);
+
+// More frequent commits
+props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 1000);
+
+// Use RocksDB for large state
+props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+```
+
+### Q21: Producer is getting "Message too large" errors
+**Causes:**
+- Message exceeds `max.message.bytes`
+- Batch exceeds `message.max.bytes`
+
+**Solutions:**
+```java
+// Increase broker limits
+max.message.bytes=10485760  // 10MB
+replica.fetch.max.bytes=10485760
+
+// Producer config
+props.put("max.request.size", 10485760);
+
+// Split large messages
+public void sendLargeMessage(String key, byte[] data) {
+    int chunkSize = 1024 * 1024; // 1MB chunks
+    for (int i = 0; i < data.length; i += chunkSize) {
+        byte[] chunk = Arrays.copyOfRange(data, i, Math.min(i + chunkSize, data.length));
+        producer.send(new ProducerRecord<>(topic, key + "-" + i, chunk));
+    }
+}
+```
+
+### Q22: How do you handle time zone issues in global deployment?
+**Strategy:**
+```java
+// Always use UTC for event timestamps
+public class UTCTimestampExtractor implements TimestampExtractor {
+    public long extract(ConsumerRecord<Object, Object> record, long partitionTime) {
+        // Extract UTC timestamp from message
+        return Instant.parse(getTimestampField(record.value())).toEpochMilli();
+    }
+}
+
+// Configure streams with UTC
+props.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, 
+          UTCTimestampExtractor.class);
+```
+
+### Q23: Your topic has millions of small messages. How to optimize?
+**Problems:**
+- High overhead per message
+- Network inefficiency
+- Storage waste
+
+**Solutions:**
+```java
+// Batch messages at application level
+List<Event> batch = new ArrayList<>();
+ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+scheduler.scheduleAtFixedRate(() -> {
+    if (!batch.isEmpty()) {
+        EventBatch batchMessage = new EventBatch(batch);
+        producer.send(new ProducerRecord<>(topic, batchMessage));
+        batch.clear();
+    }
+}, 0, 100, TimeUnit.MILLISECONDS);
+
+// Increase producer batching
+props.put("batch.size", 65536);
+props.put("linger.ms", 50);
+props.put("compression.type", "lz4");
+```
+
+### Q24: Consumer group is stuck on one partition
+**Diagnosis:**
+```java
+// Check partition assignment
+consumer.assignment().forEach(partition -> 
+    System.out.println("Partition: " + partition + 
+                      ", Lag: " + getLag(partition)));
+```
+
+**Causes & Solutions:**
+- **Slow consumer:** Scale horizontally or optimize processing
+- **Hot partition:** Redistribute keys or increase partitions
+- **Sticky assignment:** Use RoundRobin or Range strategy
+
+### Q25: How do you implement blue-green deployment with Kafka?
+**Strategy:**
+```java
+// Use consumer group names for deployment
+String consumerGroup = "my-service-" + deploymentColor; // blue/green
+props.put("group.id", consumerGroup);
+
+// Gradual traffic shift
+// 1. Deploy green version with new consumer group
+// 2. Both blue and green consume (duplicate processing)
+// 3. Verify green health
+// 4. Stop blue consumers
+// 5. Clean up blue consumer group offsets
+```
+
+### Q26: Schema Registry is returning 409 conflicts
+**Cause:** Incompatible schema changes
+
+**Resolution:**
+```java
+// Check compatibility before registering
+SchemaRegistryClient client = new CachedSchemaRegistryClient(url, 100);
+try {
+    boolean compatible = client.testCompatibility(subject, newSchema);
+    if (compatible) {
+        client.register(subject, newSchema);
+    } else {
+        // Make schema backward compatible
+        Schema fixedSchema = makeBackwardCompatible(newSchema);
+        client.register(subject, fixedSchema);
+    }
+} catch (RestClientException e) {
+    // Handle registration failure
+}
+```
+
+### Q27: Your Kafka Streams app needs to join data from 5 different topics
+**Challenge:** Complex join topology
+
+**Solution:**
+```java
+// Star join pattern - one main stream with multiple tables
+KStream<String, Order> orders = builder.stream("orders");
+KTable<String, Customer> customers = builder.table("customers");
+KTable<String, Product> products = builder.table("products");
+KTable<String, Inventory> inventory = builder.table("inventory");
+KTable<String, Pricing> pricing = builder.table("pricing");
+
+// Sequential joins
+KStream<String, EnrichedOrder> enriched = orders
+    .join(customers, (order, customer) -> order.withCustomer(customer))
+    .join(products, (order, product) -> order.withProduct(product))
+    .join(inventory, (order, inv) -> order.withInventory(inv))
+    .join(pricing, (order, price) -> order.withPricing(price));
+```
+
+### Q28: How do you handle Kafka during Black Friday traffic spike?
+**Preparation:**
+```java
+// Pre-scale infrastructure
+// - Increase partition count
+// - Add broker nodes
+// - Scale consumer groups
+
+// Circuit breaker for overload protection
+public class AdaptiveProducer {
+    private final RateLimiter rateLimiter;
+    
+    public void send(ProducerRecord record) {
+        if (rateLimiter.tryAcquire()) {
+            producer.send(record);
+        } else {
+            // Drop or queue for later
+            handleOverload(record);
+        }
+    }
+}
+
+// Auto-scaling consumer groups
+if (consumerLag > threshold) {
+    scaleUpConsumers();
+}
+```
+
+### Q29: Implement audit logging for all Kafka operations
+**Solution:**
+```java
+// Interceptor for all producer operations
+public class AuditProducerInterceptor implements ProducerInterceptor<String, String> {
+    @Override
+    public ProducerRecord<String, String> onSend(ProducerRecord<String, String> record) {
+        auditLogger.info("Sending message to topic: {} with key: {}", 
+                        record.topic(), record.key());
+        return record;
+    }
+    
+    @Override
+    public void onAcknowledgement(RecordMetadata metadata, Exception exception) {
+        if (exception == null) {
+            auditLogger.info("Message sent successfully to partition: {}", 
+                           metadata.partition());
+        } else {
+            auditLogger.error("Failed to send message", exception);
+        }
+    }
+}
+
+// Configure interceptor
+props.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, 
+          AuditProducerInterceptor.class.getName());
+```
+
+### Q30: Your team wants to implement CDC (Change Data Capture) with Kafka
+**Architecture:**
+```java
+// Database → Debezium → Kafka → Stream Processing → Target Systems
+
+// Debezium connector config
+{
+  "name": "mysql-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+    "database.hostname": "mysql",
+    "database.port": "3306",
+    "database.user": "debezium",
+    "database.password": "dbz",
+    "database.server.id": "184054",
+    "database.server.name": "dbserver1",
+    "database.include.list": "inventory",
+    "database.history.kafka.bootstrap.servers": "kafka:9092",
+    "database.history.kafka.topic": "dbhistory.inventory"
+  }
+}
+
+// Process CDC events
+KStream<String, ChangeEvent> changes = builder.stream("dbserver1.inventory.products");
+changes.filter((k, v) -> v.getOperation().equals("UPDATE"))
+       .mapValues(this::transformToBusinessEvent)
+       .to("product-updates");
+```
+// Event store
+KTable<String, UserAggregate> currentState = builder
+    .stream("user-events")
+    .groupByKey()
+    .aggregate(
+        UserAggregate::new,
+        (key, event, aggregate) -> aggregate.apply(event),
         Materialized.<String, UserAggregate, KeyValueStore<Bytes, byte[]>>as("user-state")
             .withKeySerde(Serdes.String())
             .withValueSerde(userAggregateSerde)
