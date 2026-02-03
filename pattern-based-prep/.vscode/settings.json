@@ -1,0 +1,20 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "out",
+    "java.jdt.ls.java.home": "C:\\java-21",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-21",
+            "path": "C:\\java-21",
+            "default": true
+        },
+        {
+            "name": "JavaSE-17",
+            "path": "C:\\Program Files\\Amazon Corretto\\jdk17.0.17_10"
+        }
+    ],
+    "java.debug.settings.forceBuildBeforeLaunch": true,
+    "java.debug.settings.console": "internalConsole",
+    "java.debug.settings.enableBreakpointsForLambda": true,
+    "java.debug.settings.showHex": false
+}

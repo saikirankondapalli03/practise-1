@@ -1,0 +1,219 @@
+Perfect — this is a strong, senior-ish Data Engineer / Architect profile, and with the SM only joining for the first 5 minutes, your job is to:
+
+Set the tone professionally (EY-style)
+
+Quickly signal technical depth
+
+Take full ownership of a structured 50-minute interview
+
+Below is a ready-to-use plan, tailored to Fernando’s background and EY Brazil Data Engineer expectations.
+
+0–5 mins: Joint intro (with SM present)
+Your opening (30–45 seconds)
+“Hi Fernando, good to meet you. I’m Yash, Senior Data Engineer at EY. Thanks for taking the time today.”
+
+Set context (important for EY)
+“This interview will be around 50 minutes.
+We’ll start with a brief intro, then dive into data engineering fundamentals, cloud & Spark, a hands-on coding problem, and leave time at the end for your questions.”
+
+Hand over to SM (if needed)
+Let the SM do:
+
+EY overview
+
+Team / engagement context
+
+Role expectations (delivery + client-facing)
+
+Transition (key line after SM leaves)
+“Alright, now we’ll go a bit deeper technically. Feel free to think out loud — I care more about how you reason than a perfect answer.”
+
+5–10 mins: Candidate background (signal seniority)
+These are not resume walkthrough questions — they test clarity and ownership.
+
+Q1: Architecture ownership
+Ask
+
+“Can you describe one end-to-end data platform you designed recently — from ingestion to consumption?”
+
+Listen for
+
+Clear layers (source → raw → curated → serving)
+
+Cloud-native choices (ADF vs Glue vs Databricks)
+
+Tradeoffs (batch vs streaming, cost, SLA)
+
+🚩 Red flag: tool dumping without architecture reasoning
+
+Q2: Depth check (tailored to resume)
+Ask
+
+“You’ve worked across AWS, Azure, and GCP. If you had to pick one platform you’re deepest in — which one and why?”
+
+Listen for
+
+Honest depth (likely Azure + AWS)
+
+Real limitations & pain points
+
+Not “I know everything”
+
+10–25 mins: Core Data Engineering (EY-focused)
+1️⃣ Data Modeling (must for EY)
+“How do you decide between star schema, snowflake, and wide tables in analytics?”
+
+Expected
+
+Star for BI
+
+Snowflake when dimension reuse is high
+
+Wide tables for performance / ML features
+
+Follow-up:
+
+“Have you handled slowly changing dimensions? Which type and why?”
+
+2️⃣ Spark & Performance
+“Tell me about a Spark job that was slow in production. How did you debug and optimize it?”
+
+Listen for
+
+Partitioning
+
+Skew
+
+Shuffle
+
+Broadcast joins
+
+explain() usage
+
+🚩 Red flag: “We just added more cluster size”
+
+3️⃣ ETL Reliability
+“How do you ensure data quality in production pipelines?”
+
+Look for:
+
+Checks (nulls, duplicates, schema drift)
+
+Reprocessing strategy
+
+Idempotency
+
+Alerts (Airflow / logs)
+
+25–40 mins: Coding Exercise (live or discussion-based)
+Coding Question (Python + Spark logic)
+Prompt
+
+“You receive a dataset of transactions with the following fields:
+
+user_id, transaction_id, amount, currency, transaction_ts
+Remove duplicate transactions
+
+For each user, compute total spend per day
+
+Return only users whose daily spend > 1000”
+
+Option A: Ask for PySpark (preferred)
+Expected structure
+
+from pyspark.sql import functions as F
+from pyspark.sql.window import Window
+
+df_dedup = df.dropDuplicates(["transaction_id"])
+
+df_daily = (
+    df_dedup
+    .withColumn("date", F.to_date("transaction_ts"))
+    .groupBy("user_id", "date")
+    .agg(F.sum("amount").alias("daily_spend"))
+    .filter(F.col("daily_spend") > 1000)
+)
+
+Follow-ups (this is where seniority shows)
+“How would this behave with data skew?”
+
+“How would you handle late-arriving data?”
+
+“Batch vs streaming — what changes?”
+
+Alternative SQL question (if Spark is shaky)
+“Write a SQL query to get the latest record per user from a table with duplicates.”
+
+Expected:
+
+ROW_NUMBER() window function
+
+Not correlated subqueries
+
+40–45 mins: Cloud Design Scenarios
+Pick one, don’t overload.
+
+Scenario (EY-style)
+“You need to ingest 10TB/day from S3 into a curated layer. SLA is 2 hours. What would you design?”
+
+Look for
+
+Partition strategy
+
+Parallelism
+
+Glue vs Spark
+
+File formats (Parquet)
+
+Compression
+
+45–50 mins: Candidate Questions (important signal)
+Good signs if they ask:
+
+Team structure
+
+Client exposure
+
+Data volume / maturity
+
+Ownership vs support role
+
+🚩 Weak sign:
+
+Only salary / PTO questions
+
+Final Evaluation Cheat Sheet (for EY)
+Area	What Good Looks Like
+Architecture	Clear layers + tradeoffs
+Spark	Understands why, not just APIs
+Cloud	Practical, not certification-driven
+Communication	Structured, client-ready
+Seniority	Talks about failures & fixes
+My honest read of this candidate (based on resume)
+Strengths
+
+Strong ETL + cloud breadth
+
+Good consultant background (Bradesco, Stefanini)
+
+Solid tooling exposure
+
+Things to probe hard
+
+True Spark internals depth
+
+Scale beyond “normal enterprise loads”
+
+Hands-on vs architecture-only claims
+
+If you want, next I can:
+
+Give you a scorecard template
+
+Simulate answers (good vs weak)
+
+Help you decide leveling (Senior DE vs DE II)
+
+You’ll run this interview like a pro 👊
+

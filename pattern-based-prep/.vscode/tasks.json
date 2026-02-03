@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run LongestSubString Java",
+            "type": "shell",
+            "command": "java",
+            "args": [
+                "${workspaceFolder}/src/com/patterns/slidingwindow/pattern2variablelongest/LongestSubStringWithOutRepeatingCharacters.java"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run current Java file",
+            "type": "shell",
+            "command": "java",
+            "args": [
+                "${file}"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        }
+    ]
+}

@@ -1,0 +1,118 @@
+Hey Sai,
+
+ 
+
+Here’s the interview prep information .  In this email and attached are the job description, various technical concepts, questions, and coding challenges.
+
+ 
+
+Please join the interview 10 minutes early.  Attached are Java technical questions and coding challenges, same for SQL. You should also be prepared to answer front end Javascript/Typescript/Angular questions (see below), plus behavioral questions.
+
+ 
+
+Be prepared to overly communicate your thought process throughout the coding problem and why you are choosing certain methods, etc. The team will be asking you questions like “Why are using this syntax?”,  “Can’t you use another?”,  “If you use that, what will happened?”.
+
+ 
+
+*The panel will focus on the experience listed on your resume and ask you questions to assess your level of knowledge with various technologies, the benefits of using them, etc. You should be honest about what you do and don’t know.
+
+ 
+
+Please find some Prep questions:
+
+ 
+
+Coding Challenge--. 1) The code was about swapping the characters from strings. There were 4-5 strings.
+They asked to write a code which will swap the first and second letters of the string.
+i.e., if the words are Coffee and Donuts, output should be “Doffee” and “Conuts”
+They asked about different possibilities of output; they went through two approaches to solve the problem. Also, changed the inputs to check of the code runs still the same. (Write the code by explaining the logic)
+
+Code 2) Coding - Write API from scratch 
+
+Code 3) Array iteration - Coding - most repeated numbers in an array
+
+Code 4) - Arrays get the common number. Linked list First IDE then Online IDE,
+
+Code 5) -Palindrome (asked more to follow up questions)
+Code 6) -we have a string "one thousand four fifty" convert that into 1450 (multithreading Concept)
+
+Code 7) - Implementing a stack using an array in Java and demonstrate push, peek, and pop operations.”
+
+Code8) – Stopwatch
+
+Code 9)- "Find the minimum time difference from a list." 
+
+Code 10)- You are given a string consisting of mathematical expressions.
+                 Examples:
+                 1+2+3+5
+                1-6++5-6
+                Assume the operators are + and - only for now.
+               Write a complete working program to calculate the expression using recursion.  Validate your program with test cases.
+Code 11)- Building H20 (multithreading)            
+
+Code 12)- A common coding problem related to 5 pizza toppings is to calculate the number of combinations possible when selecting toppings from a larger menu. For instance, if a restaurant has 13 topping options and allows customers to choose any 5, a coder will need to implement a solution to calculate the number of unique topping combinations, as the order of toppings doesn't matter. 
+
+Code 13)- Palindrome Question – In a string containing lowercase characters, write a program to check whether its Palindrome or not. Print ‘yes’ or ‘no.
+
+Code 14)-Count all the characters in the given string without using a method header.
+
+ 
+
+ Problem Definition
+
+Task:
+
+Calculate the total number of ways to choose “k” toppings from a set of “n” available toppings, where the order of the toppings does not matter and no topping can be selected more than once. 
+
+ Example:
+
+A pizza place offers 13 different toppings, and a customer can choose exactly 5 of them. How many different pizza combinations can be made? 
+
+Code 15) Secret Santa Gift
+
+Code 16) Group the employees based on salary
+
+Code 17) Given sorted array with duplicates, return numbers of unique elements
+
+Technical Questions:
+
+How would you communicate APIs?
+Java version worked with features.
+Asynchronous and Synchronous ways of communication.
+In Async communication how would you handle the traffic for REST APIs?
+Design Patterns in Java.
+Asked about understanding of Front-end technologies as well but not in depth.
+Questions about AWS, Redis caching.
+Join 2 maps 
+switch map, Merge map
+Circuit breakers
+AWS In detail- services and deployment
+how would you implement Circuit breakers ?
+String - Convert it to a map using keys
+Kafka broker - AWS SQS
+Advantages of using Kafka
+Asynchronous programming
+Spring boot and Java upgrade/migration
+Virtual threads 
+- Rest API design
+how to implement a transactional set up 
+Code refactoring/Finding error – 
+Code coverage
+test & deployment
+Discussion based on resume.
+ 
+
+Behavioral Questions:
+
+Tell me about a time a manager has criticized you/given you negative feedback. How did you react?
+How do you deal with disagreements with team members?
+Tell me about a time you worked on a difficult project. What was difficult and what was the end result?
+If any team member is lagging, what approach would you take if you’re done with your story?
+How are you going to say that your story is finished?
+If a peer’s code is not good how you would handle?
+As a Sr Developer, what’s the worst feedback you’ve given a JR Developer?
+How do you approach Sr leadership for something you would need to implement?
+What’s your passion? What and how do you want to achieve that?
+How you manage if something is not going well?
+How do you push the code into production?
+What’s your recent achievement individual, as well as an organization?

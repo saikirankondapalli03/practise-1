@@ -1,0 +1,24 @@
+SQL Technical Questions and Concepts
+Difference between primary Key and foreign key?
+What is an index?
+Different types of database objects worked in DBMS databases?
+What is a cursor?
+What are commit, Rollback and save point?
+Name some aggregate functions used in SQL?
+How do you give access to DB objects to other users?
+How do you store and retrieve a JSON value in Postgres?
+What are Control structures in dbms?
+How would you troubleshoot a slow database query?
+What are the different types of joins in SQL? Give simple examples of each.
+What is a subquery?
+
+
+Coding: SQL
+•	There are 2 tables – employee and department – give the data for those two tables, wanted the department name and # of employees in that department.
+
+o	write SQL query for employee ID and give the max salary. 
+
+	Scenario based question: If one user mistakenly enters their name in 1 column vs 2 columns – how do you retract and save properly?
+•	Scenario based logical questions – between two tables how will you get the data? If there is data in 4 columns but not in 1 then how do we get the data in the 1 column 
+•	If a vehicle is parked what methods will you use to get the data for where its parked and details of the vehicle?
+

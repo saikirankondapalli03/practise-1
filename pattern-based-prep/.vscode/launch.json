@@ -1,0 +1,57 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "BuildingH2O",
+            "request": "launch",
+            "mainClass": "com.fidelity_dexian.com.BuildingH2O",
+            "projectName": "pattern-based-prep_76b8bfad"
+        },
+        {
+            "type": "java",
+            "name": "SwapFirstLetters",
+            "request": "launch",
+            "mainClass": "com.fidelity_dexian.com.SwapFirstLetters",
+            "projectName": "pattern-based-prep_76b8bfad"
+        },
+        {
+            "type": "java",
+            "name": "Debug Java - Enter main class",
+            "request": "launch",
+            "mainClass": "${input:mainClass}",
+            "projectName": "pattern-based-prep",
+            "sourcePaths": [
+                "${workspaceFolder}/src"
+            ]
+        },
+        {
+            "type": "java",
+            "name": "Debug SwapFirstLetters",
+            "request": "launch",
+            "mainClass": "com.fidelity_dexian.com.SwapFirstLetters",
+            "projectName": "pattern-based-prep",
+            "sourcePaths": [
+                "${workspaceFolder}/src"
+            ]
+        },
+        {
+            "type": "java",
+            "name": "Debug LongestSubString",
+            "request": "launch",
+            "mainClass": "com.patterns.slidingwindow.pattern2variablelongest.LongestSubStringWithOutRepeatingCharacters",
+            "projectName": "pattern-based-prep",
+            "sourcePaths": [
+                "${workspaceFolder}/src"
+            ]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "mainClass",
+            "type": "promptString",
+            "description": "Fully qualified main class (e.g. com.fidelity_dexian.com.SwapFirstLetters)",
+            "default": "com.fidelity_dexian.com.SwapFirstLetters"
+        }
+    ]
+}

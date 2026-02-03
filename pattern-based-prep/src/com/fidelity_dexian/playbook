@@ -1,0 +1,83 @@
+Java Technical Questions and Concepts:
+
+1.	How do you implement multithreading in Java?
+2.	If you were to start a spring boot project to save data into the database, how would you do that from scratch? 
+3.	Java exception handling
+4.	Dependency injection 
+5.	Encapsulation 
+6.	How to implement a REST application (end to end)?
+7.	How does Spring Boot work? – total flow from end-to-end
+8.	How does dependency injection work?
+9.	Boot Coupling
+10.	APIs
+11.	Spring Boot
+12.	Spring Batch
+13.	OOPs concepts and questions
+14.	Java8/11 features the candidate has worked with 
+15.	Your development process 
+16.	How have you handled Batch jobs?
+17.	Different maps and how we use them  
+18.	Different types of lists and how we use them
+19.	CI/CD questions
+20.	Spring Batch vs. Spring Boot 
+21.	Data Structures 
+22.	Writing test cases
+23.	How do you leverage hash mapping?
+24.	Troubleshoot issues from initial stage to the end
+25.	How many collections have you used in your career?
+26.	End to end microservice – will ask you to verbally tell
+27.	What is chunk within Spring Batch?
+28.	What deployment work have you done?
+29.	What collection work have you done? 
+30.	Difference between @Controller and @RestController
+31.	How to connect with database using Spring JPA
+32.	What are the other ways we can connect with DB without Spring JPA
+33.	How do you exclude an existing class in Spring Boot?
+34.	What is the difference between PUT and PATCH?
+35.	What types of constraints does the DB have? 
+36.	Can you carry sessions while conducting API testing?
+37.	How to implement rest application (end to end)?
+38.	What is your consideration when trying to design a scalable application? How do you ensure your app doesn’t have any downtime?
+39.	How are you designing your applications, so it is cloud native or works well in cloud
+40.	When you are implementing a webservice, what are the things you are considering when designing it and what are the implementation details you will work on?
+41.	What is the difference between EC2 instance and EKS instance?
+42.	How would you write Lambda expressions using Java 8 functions & Streams concepts
+43.	How to implement rest application (end to end)?
+44.	How do you create the tables based on the scenario – how will you create tables while getting data from spring boot?
+a.	What methods would you use? Get, post, etc.? 
+45.	Stored Procedures
+46.	ORM – mybatis, hibernate, and JPA
+
+
+Java Questions
+Runtime Polymorphism
+Compile-time polymorphism
+Does a set allow duplicate values?
+What keyword is used to inherit properties of a class?
+How to make a class immutable
+What is the “root” interfaces of Java collection classes
+What is a Spring boot CRUD repository
+How do you handle failures in microservices
+What is the difference between error and exception
+Difference between HTTP GET and POST methods
+Out of ArrayList and Vector which is faster (Arraylist is correct)
+Which method does not release lock on resource sleep() or wait()
+What is the average insertion time for Binary Search Tree
+How to achieve abstraction in java
+How does Java handle memory management
+
+
+
+
+Coding Challenges to Practice:
+Example 1: How to rotate array elements one position left  1,2,3,4,5 5   to   2,3,4,5,1.
+
+Example 2: Print Hello World – What is the number of repeated and non-repeated Letters?  
+
+Example 3: Number of characters in a string 
+
+Example 4: Number of times the character is repeated           
+
+Example 5:
+ 
+
